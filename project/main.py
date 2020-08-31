@@ -1,10 +1,5 @@
-from login import *
-from addstock import *
-from showstock import *
 from os import *
-from updatestock import *
-from updateharga import *
-from laporpembelian import *
+from semuanya import *
 login()
 system('clear')
 
@@ -37,9 +32,3 @@ while 1 == 1:
 	elif user == 5:
 		system('clear')
 		updatestock()
-	elif user == 6:
-		system('clear')
-		f = open('test.txt','r+')
-		file_contens = f.read()
-		print(file_contens)
-		f.close

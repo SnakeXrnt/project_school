@@ -1,0 +1,3 @@
+pendapatan dari NABIL dengan jumlah 2 adalah Rp400
+pendapatan dari NANAS dengan jumlah 100 adalah Rp10000
+pendapatan dari zeplin dengan jumlah 50 adalah Rp1000000
