@@ -52,7 +52,6 @@ label_process.grid(column = 2, row=1)
 
 suhu = StringVar()
 combo_suhu = ttk.Combobox(window, textvariable=suhu, font=('arial', 18, 'bold'), width=8)
-combo_suhu['values'] = ['F', 'C', 'R', 'K']
 combo_suhu.grid(column = 0, row = 2)
 combo_suhu.current(0)
 
