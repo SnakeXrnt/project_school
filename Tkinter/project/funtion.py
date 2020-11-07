@@ -2,6 +2,7 @@
 
 from tkinter import *
 import os
+from mian import *
 
 # Designing window for registration
 
@@ -108,6 +109,7 @@ def login_sucess():
     login_success_screen.geometry("150x100")
     Label(login_success_screen, text="Login Success").pack()
     Button(login_success_screen, text="OK", command=delete_login_success).pack()
+    Home()
 
 # Designing popup for login invalid password
 
