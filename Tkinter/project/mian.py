@@ -164,9 +164,16 @@ main_account_screen()
 
 def Home():
 
-    home = Tk()
-    home.geometry('800x600')
-    home.title('Home')
+    window = Tk()
+    window.geometry('800x600')
+    window.title('Home')
+
+    tabControl = ttk.Notebook(window)
+    tab1 = Frame(tabControl)
+    tab2 = Frame(tabControl)
+    tabControl.add(tab1, text='Home')
+    tabControl.add(tab2, text='Settings')
+    tabControl.pack(expand=1,fill='both')
 
     def time():
         string = strftime('%H:%M:%S %p')
@@ -175,14 +182,22 @@ def Home():
 
     # Styling the label widget so that clock
     # will look more attractive
-    lbl = Label(home, font = ('calibri', 40, 'bold'))
+    lbl = Label(tab1, font = ('calibri', 40, 'bold'))
 
 
     # Placing clock at the centre
     # of the tkinter window
     lbl.grid(column=0,row=0)
     time()
-    
+
+    font = ('cabari',15)
+    Label(tab1,text='Selamat Datang Di Toko Terang Jaya',font=('cabari',30,'bold')).grid(column=0,row=1)
+
+
+
+
+
+
 
 
 
