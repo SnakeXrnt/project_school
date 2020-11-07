@@ -49,8 +49,10 @@ window.resizable(False, False)
 tabControl = ttk.Notebook(window)
 tab1 = Frame(tabControl)
 tab2 = Frame(tabControl)
+tam3 = Frame(tabControl)
 tabControl.add(tab1, text='Suhu')
 tabControl.add(tab2, text='rectangle')
+tabControl.add(tab3,text='Calculator Custom')
 tabControl.pack(expand=1,fill='both')
 
 
@@ -184,5 +186,9 @@ note.grid(column=0,row=5)
 
 button = Button(Frame2,font=('arial',19),text='CALCULATE!',command=calculate)
 button.grid(column=0,row=6)
+
+############CALCULATOR CUSTOM
+
+
 
 window.mainloop()
