@@ -6,7 +6,7 @@ import os
 
 def register():
     global register_screen
-    register_screen = Toplevel(main_screen)
+    register_screen = Tk()
     register_screen.title("Register")
     register_screen.geometry("300x250")
 
@@ -158,7 +158,7 @@ def main_account_screen():
     Label(text="").pack()
     Button(text="Login",  command = login).pack()
     Label(text="").pack()
-    Button(text="Register", command=register).pack()
+
 
 main_account_screen()
 
@@ -174,18 +174,14 @@ def Home():
     tabControl.add(tab2, text='Settings')
     tabControl.pack(expand=1,fill='both')
 
-    def time():
-        string = strftime('%H:%M:%S %p')
-        lbl.config(text = string)
-        lbl.after(1000, time)
-            # Styling the label widget so that clock
-            # will look more attractive
-    lbl = Label(tab1, font = ('calibri', 40, 'bold'))
+    label = Label(tab1, font=("Courier", 30, 'bold'))
+    label.grid(row =0, column=0)
 
-        # Placing clock at the centre
-        # of the tkinter window
-    lbl.grid(column=0,row=0,sticky='wens')
-    time()
+    def digitalclock():
+       text_input = strftime("%H:%M:%S")
+       label.config(text=text_input)
+       label.after(200, digitalclock)
+    digitalclock()
 
 
     Label(tab1,text='SELAMAT DATANG DI TOKO TERANG JAYA',font=('cabari',25,'bold')).grid(column=0,row=1,columnspan=11)
@@ -235,18 +231,23 @@ def Home():
     sapa = Label(tab1,text=(salam),font=('Arial',25,'bold')).grid(row=3,column=8)
 
 
-    Label(tab1,text='Halo Workers',font=('Arial',10)).grid(row=4,column=8)
-    Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('Arial',10)).grid(row=5,column=8)
-    Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('Arial',10)).grid(row=6,column=8)
+    sapa5 =Label(tab1,text='Halo Workers',font=('Arial',10)).grid(row=4,column=8)
+    sapa4 =Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('Arial',10)).grid(row=5,column=8)
+    sapa3 =Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('Arial',10)).grid(row=6,column=8)
 
-    Label(tab1,text=(selamat),font=('Arial',10)).grid(row=7,column=8)
-    Label(tab1,text=(semangat),font=('Arial',15,'bold')).grid(row=9,column=8)
+    sapa2 =Label(tab1,text=(selamat),font=('Arial',10)).grid(row=7,column=8)
+    sapa1 =Label(tab1,text=(semangat),font=('Arial',10,'bold')).grid(row=9,column=8)
+
+    def restart():
+        main_account_screen()
+        window.destroy()
 
 
-
-
-
-
+    Label(tab2,text='Settings',font=('arial',30,'bold')).grid(row=0,column=0)
+    Label(tab2,text='Register a new user \t :',font=('arial',10)).grid(row=1,column=0,sticky='w')
+    Button(tab2,text="Register", command=register).grid(row=1,column=1,sticky='w')
+    Label(tab2,text='Restart App \t :',font=('arial',10)).grid(row=2,column=0,sticky='w')
+    Button(tab2,text='Restart',command=restart).grid(row=2,column=1,sticky='w')
 
 
 
