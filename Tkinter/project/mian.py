@@ -1,4 +1,4 @@
-from tkinter import Tk, Label, StringVar, ttk, Entry, Button , LabelFrame , Menu , Frame
+from tkinter import Tk, ttk , Label, StringVar, ttk, Entry, Button , LabelFrame , Menu , Frame
 from tkinter import *
 from tkinter.ttk import *
 from time import strftime
@@ -17,7 +17,7 @@ def register():
     username = StringVar()
     password = StringVar()
 
-    Label(register_screen, text="Please enter details below", bg="blue").pack()
+    Label(register_screen, text="Please enter details below").pack()
     Label(register_screen, text="").pack()
     username_lable = Label(register_screen, text="Username * ")
     username_lable.pack()
@@ -28,7 +28,7 @@ def register():
     password_entry = Entry(register_screen, textvariable=password, show='*')
     password_entry.pack()
     Label(register_screen, text="").pack()
-    Button(register_screen, text="Register", width=10, height=1, bg="blue", command = register_user).pack()
+    Button(register_screen, text="Register",command = register_user).pack()
 
 
 # Designing window for login
@@ -77,7 +77,7 @@ def register_user():
     username_entry.delete(0, END)
     password_entry.delete(0, END)
 
-    Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()
+    Label(register_screen, text="Registration Success", font=("calibri", 11)).pack()
 
 # Implementing event on login button
 
@@ -163,9 +163,8 @@ def main_account_screen():
 main_account_screen()
 
 def Home():
-
     window = Tk()
-    window.geometry('800x600')
+    window.geometry('1000x600')
     window.title('Home')
 
     tabControl = ttk.Notebook(window)
@@ -179,19 +178,35 @@ def Home():
         string = strftime('%H:%M:%S %p')
         lbl.config(text = string)
         lbl.after(1000, time)
-
-    # Styling the label widget so that clock
-    # will look more attractive
+            # Styling the label widget so that clock
+            # will look more attractive
     lbl = Label(tab1, font = ('calibri', 40, 'bold'))
 
-
-    # Placing clock at the centre
-    # of the tkinter window
-    lbl.grid(column=0,row=0)
+        # Placing clock at the centre
+        # of the tkinter window
+    lbl.grid(column=0,row=0,sticky='wens')
     time()
 
-    font = ('cabari',15)
-    Label(tab1,text='Selamat Datang Di Toko Terang Jaya',font=('cabari',30,'bold')).grid(column=0,row=1)
+
+    Label(tab1,text='SELAMAT DATANG DI TOKO TERANG JAYA',font=('cabari',25,'bold')).grid(column=0,row=1,columnspan=11)
+
+    Button(tab1,text='MASUKAN BARANG BARU').grid(row=3,column=0,padx=30,pady=30)
+    Button(tab1,text='UBAH KODE BARANG').grid(row=5,column=0,padx=30,pady=30)
+    Button(tab1,text='UBAH JUMLAH STOCK').grid(row=7,column=0,padx=30,pady=30)
+    Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=30)
+
+    Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=30)
+    Button(tab1,text='BUKA LIST HARGA').grid(row=5,column=2,padx=30,pady=30)
+    Button(tab1,text='BUKA LIST STOCK').grid(row=7,column=2,padx=30,pady=30)
+    Button(tab1,text='BUKA LIST STOCK DAN HARGA').grid(row=9,column=2,padx=30,pady=30)
+
+    Button(tab1,text='LAPOR PEMBELIAN').grid(row=3,column=6,padx=30,pady=30)
+    Button(tab1,text='LAPOER ERROR').grid(row=5,column=6,padx=30,pady=30)
+    Button(tab1,text='LAPOR PENAMBAHAN UANG').grid(row=7,column=6,padx=30,pady=30)
+    Button(tab1,text='LAPOR PENAGMBILAN UANG').grid(row=9,column=6,padx=30,pady=30)
+
+
+
 
 
 
