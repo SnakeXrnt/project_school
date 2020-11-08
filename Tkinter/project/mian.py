@@ -190,21 +190,57 @@ def Home():
 
     Label(tab1,text='SELAMAT DATANG DI TOKO TERANG JAYA',font=('cabari',25,'bold')).grid(column=0,row=1,columnspan=11)
 
-    Button(tab1,text='MASUKAN BARANG BARU').grid(row=3,column=0,padx=30,pady=30)
-    Button(tab1,text='UBAH KODE BARANG').grid(row=5,column=0,padx=30,pady=30)
-    Button(tab1,text='UBAH JUMLAH STOCK').grid(row=7,column=0,padx=30,pady=30)
-    Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=30)
+    Button(tab1,text='MASUKAN BARANG BARU').grid(row=3,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH KODE BARANG').grid(row=5,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH JUMLAH STOCK').grid(row=7,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=20)
 
-    Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=30)
-    Button(tab1,text='BUKA LIST HARGA').grid(row=5,column=2,padx=30,pady=30)
-    Button(tab1,text='BUKA LIST STOCK').grid(row=7,column=2,padx=30,pady=30)
-    Button(tab1,text='BUKA LIST STOCK DAN HARGA').grid(row=9,column=2,padx=30,pady=30)
+    Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=20)
+    Button(tab1,text='BUKA LIST HARGA').grid(row=5,column=2,padx=30,pady=20)
+    Button(tab1,text='BUKA LIST STOCK').grid(row=7,column=2,padx=30,pady=20)
+    Button(tab1,text='BUKA LIST STOCK DAN HARGA').grid(row=9,column=2,padx=30,pady=20)
 
-    Button(tab1,text='LAPOR PEMBELIAN').grid(row=3,column=6,padx=30,pady=30)
-    Button(tab1,text='LAPOER ERROR').grid(row=5,column=6,padx=30,pady=30)
-    Button(tab1,text='LAPOR PENAMBAHAN UANG').grid(row=7,column=6,padx=30,pady=30)
-    Button(tab1,text='LAPOR PENAGMBILAN UANG').grid(row=9,column=6,padx=30,pady=30)
+    Button(tab1,text='LAPOR PEMBELIAN').grid(row=3,column=6,padx=30,pady=20)
+    Button(tab1,text='LAPOR ERROR').grid(row=5,column=6,padx=30,pady=20)
+    Button(tab1,text='LAPOR PENAMBAHAN UANG').grid(row=7,column=6,padx=30,pady=20)
+    Button(tab1,text='LAPOR PENAGMBILAN UANG').grid(row=9,column=6,padx=30,pady=20)
 
+    time = int(strftime('%H'))
+    salam = ''
+    selamat = ''
+    semangat = ''
+    selamat1 = ''
+    if time < 11 :
+        salam += 'Selamat Pagi'
+        selamat += 'Semangat Bekerja sekali lagi :)'
+        semangat += 'SEMANGAT !'
+        selamat1 = 'Selamat Bekerja'
+    elif time < 14 :
+        salam += 'Selamat Siang'
+        selamat += 'Semangat Bekerja sekali lagi :)'
+        semangat += 'SEMANGAT !'
+        selamat1 = 'Selamat Bekerja'
+    elif time < 18 :
+        salam += ' Selamat Sore'
+        selamat += 'Selamat Istirahat :)'
+        semangat += 'Goodbye'
+        selamat1 = 'Selamat Pulang'
+
+    else :
+        salam += 'Selamat Malam'
+        selamat += 'Selamat Beristirahat:)'
+        semangat += 'Goodbye'
+        selamat1 = 'Selamat Pulang'
+
+    sapa = Label(tab1,text=(salam),font=('Arial',25,'bold')).grid(row=3,column=8)
+
+
+    Label(tab1,text='Halo Workers',font=('Arial',10)).grid(row=4,column=8)
+    Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('Arial',10)).grid(row=5,column=8)
+    Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('Arial',10)).grid(row=6,column=8)
+
+    Label(tab1,text=(selamat),font=('Arial',10)).grid(row=7,column=8)
+    Label(tab1,text=(semangat),font=('Arial',15,'bold')).grid(row=9,column=8)
 
 
 
