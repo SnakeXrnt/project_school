@@ -1,6 +1,7 @@
 from tkinter import Tk, ttk , Label, StringVar, ttk, Entry, Button , LabelFrame , Menu , Frame
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import messagebox as msg
 from time import strftime
 import os
 
@@ -35,7 +36,7 @@ def register():
 
 def login():
     global login_screen
-    login_screen = Toplevel(main_screen)
+    login_screen = Tk()
     login_screen.title("Login")
     login_screen.geometry("300x250")
     Label(login_screen, text="Please enter details below to login").pack()
@@ -136,7 +137,7 @@ def user_not_found():
 
 def delete_login_success():
     login_success_screen.destroy()
-    main_screen.destroy()
+    login_screen.destroy()
 
 
 def delete_password_not_recognised():
@@ -160,12 +161,32 @@ def main_account_screen():
     Label(text="").pack()
 
 
-main_account_screen()
+login()
 
 def Home():
     window = Tk()
     window.geometry('1000x600')
     window.title('Home')
+
+    menu_bar = Menu(window)
+    window.config(menu=menu_bar)
+
+    label_menu_file = Menu(menu_bar)
+
+    label_menu_file.add_command(label='NewProgram')
+    menu_bar.add_cascade(label='File',menu=label_menu_file)
+
+    def show_msg_box():
+        msg.showinfo('About KASIR TOKO TERANGJAYA ','versi 2020.11.2(beta tkinter)')
+
+
+    label_help_menu = Menu(menu_bar,tearoff=0)
+    label_help_menu.add_command(label='HELP')
+    label_help_menu.add_command(label='ABOUT',command=show_msg_box)
+    menu_bar.add_cascade(label='Help',menu=label_help_menu)
+
+
+
 
     tabControl = ttk.Notebook(window)
     tab1 = Frame(tabControl)
@@ -224,7 +245,7 @@ def Home():
 
     else :
         salam += 'Selamat Malam'
-        selamat += 'Selamat Beristirahat:)'
+        selamat += 'Selamat Beristirahat :)'
         semangat += 'Goodbye'
         selamat1 = 'Selamat Pulang'
 
@@ -241,6 +262,9 @@ def Home():
     def restart():
         main_account_screen()
         window.destroy()
+    def quit():
+    	exit()
+
 
 
     Label(tab2,text='Settings',font=('arial',30,'bold')).grid(row=0,column=0)
@@ -248,6 +272,8 @@ def Home():
     Button(tab2,text="Register", command=register).grid(row=1,column=1,sticky='w')
     Label(tab2,text='Restart App \t :',font=('arial',10)).grid(row=2,column=0,sticky='w')
     Button(tab2,text='Restart',command=restart).grid(row=2,column=1,sticky='w')
+    Label(tab2,text='Quit\t :',font=('arial',10)).grid(row=3,column=0,sticky='w')
+    Button(tab2,text='QUIT!',command=quit).grid(row=3,column=1,sticky='w')
 
 
 
@@ -255,4 +281,3 @@ def Home():
 
 
 mainloop()
-main_screen.mainloop()
