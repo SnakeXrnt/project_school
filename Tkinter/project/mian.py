@@ -4,6 +4,9 @@ from tkinter.ttk import *
 from tkinter import messagebox as msg
 from time import strftime
 import os
+import tkinter.ttk as ttk
+from ttkthemes import ThemedStyle
+from json import *
 
 def register():
     global register_screen
@@ -168,6 +171,8 @@ def Home():
     window.geometry('1000x600')
     window.title('Home')
 
+
+
     menu_bar = Menu(window)
     window.config(menu=menu_bar)
 
@@ -203,6 +208,8 @@ def Home():
        label.config(text=text_input)
        label.after(200, digitalclock)
     digitalclock()
+
+
 
 
     Label(tab1,text='SELAMAT DATANG DI TOKO TERANG JAYA',font=('cabari',25,'bold')).grid(column=0,row=1,columnspan=11)
@@ -249,31 +256,58 @@ def Home():
         semangat += 'Goodbye'
         selamat1 = 'Selamat Pulang'
 
-    sapa = Label(tab1,text=(salam),font=('Arial',25,'bold')).grid(row=3,column=8)
-
-
-    sapa5 =Label(tab1,text='Halo Workers',font=('Arial',10)).grid(row=4,column=8)
-    sapa4 =Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('Arial',10)).grid(row=5,column=8)
-    sapa3 =Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('Arial',10)).grid(row=6,column=8)
-
-    sapa2 =Label(tab1,text=(selamat),font=('Arial',10)).grid(row=7,column=8)
-    sapa1 =Label(tab1,text=(semangat),font=('Arial',10,'bold')).grid(row=9,column=8)
-
     def restart():
-        main_account_screen()
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
         window.destroy()
     def quit():
     	exit()
 
-
-
     Label(tab2,text='Settings',font=('arial',30,'bold')).grid(row=0,column=0)
     Label(tab2,text='Register a new user \t :',font=('arial',10)).grid(row=1,column=0,sticky='w')
     Button(tab2,text="Register", command=register).grid(row=1,column=1,sticky='w')
-    Label(tab2,text='Restart App \t :',font=('arial',10)).grid(row=2,column=0,sticky='w')
+    Label(tab2,text='Restart App \t \t :',font=('arial',10)).grid(row=2,column=0,sticky='w')
     Button(tab2,text='Restart',command=restart).grid(row=2,column=1,sticky='w')
-    Label(tab2,text='Quit\t :',font=('arial',10)).grid(row=3,column=0,sticky='w')
+    Label(tab2,text='Quit\t \t \t :',font=('arial',10)).grid(row=3,column=0,sticky='w')
     Button(tab2,text='QUIT!',command=quit).grid(row=3,column=1,sticky='w')
+
+
+
+
+    Label(tab2,text='Font Size \t \t :',font=('arial',10)).grid(row=4,column=0)
+    font_size = StringVar()
+    fz = Entry(tab2, textvariable=font_size,).grid(column=1,row=4)
+    def get_font_size():
+        with open('font_size.txt','w') as f:
+            m = font_size.get()
+            f.write(m)
+
+    Button(tab2,text='Change!',command=get_font_size).grid(column=2,row=4)
+
+    q = open('font_size.txt','r')
+    s = int(q.read())
+
+
+
+    sapa5 =Label(tab1,text='Halo Workers',font=('arial',s)).grid(row=4,column=8)
+    sapa4 =Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('arial',s)).grid(row=5,column=8)
+    sapa3 =Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('arial',s)).grid(row=6,column=8)
+
+    sapa2 =Label(tab1,text=(selamat),font=('arial',s)).grid(row=7,column=8)
+    sapa1 =Label(tab1,text=(semangat),font=('arial',s)).grid(row=9,column=8)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
