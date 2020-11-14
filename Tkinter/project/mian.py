@@ -164,7 +164,8 @@ def main_account_screen():
     Label(text="").pack()
 
 
-login()
+#login()
+
 
 def Home():
     window = Tk()
@@ -275,17 +276,21 @@ def Home():
 
 
     Label(tab2,text='Font Size \t \t :',font=('arial',10)).grid(row=4,column=0)
-    font_size = StringVar()
+    font_size = IntVar()
     fz = Entry(tab2, textvariable=font_size,).grid(column=1,row=4)
     def get_font_size():
-        with open('font_size.txt','w') as f:
+        with open('theme.json','w') as f:
             m = font_size.get()
-            f.write(m)
+            n = 10 + m
+            f.dump()
 
     Button(tab2,text='Change!',command=get_font_size).grid(column=2,row=4)
 
-    q = open('font_size.txt','r')
-    s = int(q.read())
+    q = open('theme.json','r')
+    h = int(q.read(0))
+    s = float(h)
+
+
 
 
 
@@ -310,7 +315,7 @@ def Home():
 
 
 
-
+Home()
 
 
 
