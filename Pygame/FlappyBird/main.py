@@ -26,7 +26,7 @@ class FlappyBirdGame:
 		self.game_pipes = pygame.sprite.Group()
 		self.create_pipes()
 
-		
+
 		self.title = pygame.display.set_caption(self.game_settings.title)
 		self.bg_screen = self.game_settings.bg
 
@@ -79,13 +79,14 @@ class FlappyBirdGame:
 
 		#Atur ulang tinggi dari pipe_bottom
 		pipe_bottom.pipe_image.height = screen_rect.height - pipe_top.pipe_image.height - gap
-		
+
 		pipe_bottom.pipe_image.bottomright = screen_rect.bottomright
 		pipe_bottom.pipe_image.x -= 50
 		pipe_bottom.head.head_image.midtop = pipe_bottom.pipe_image.midtop
 
 		self.game_pipes.add(pipe_top)
 		self.game_pipes.add(pipe_bottom)
+
 
 
 game = FlappyBirdGame()
