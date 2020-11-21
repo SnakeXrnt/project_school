@@ -199,7 +199,7 @@ def Home():
     tab2 = Frame(tabControl)
     tabControl.add(tab1, text='Home')
     tabControl.add(tab2, text='Settings')
-    tabControl.pack(expand=1,fill='both')
+    tabControl.grid(column=0,row=0)
 
     label = Label(tab1, font=("Courier", 30, 'bold'))
     label.grid(row =0, column=0)
@@ -277,18 +277,25 @@ def Home():
 
     Label(tab2,text='Font Size \t \t :',font=('arial',10)).grid(row=4,column=0)
     font_size = IntVar()
-    fz = Entry(tab2, textvariable=font_size,).grid(column=1,row=4)
-    def get_font_size():
-        with open('theme.json','w') as f:
-            m = font_size.get()
-            n = 10 + m
-            f.dump()
+    fz = Entry(tab2, textvariable=font_size).grid(column=1,row=4)
+    p = font_size.get()
 
-    Button(tab2,text='Change!',command=get_font_size).grid(column=2,row=4)
+    def change():
+        with open('file.json', 'r+') as file:
+            m = 10
+            m += p
+            content = file.read()
+            file.seek(0)
+            content.replace(content,str(m))
+            file.write(str(m))
+            file.close()
 
-    q = open('theme.json','r')
-    h = int(q.read(0))
-    s = float(h)
+    Button(tab2,text='Change!',command=change).grid(column=4,row=4)
+    s=10
+
+
+
+
 
 
 
