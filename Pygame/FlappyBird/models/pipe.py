@@ -11,7 +11,8 @@ class Pipe(Sprite):
 
 	def __init__(self, FlappyBirdGame):
 		super().__init__()
-		
+		self.settings = FlappyBirdGame.game_settings
+
 		self.screen = FlappyBirdGame.screen
 		self.game_settings = FlappyBirdGame.game_settings
 
@@ -26,6 +27,16 @@ class Pipe(Sprite):
 		#Memasukkan Kepala Pipa
 		self.head = Head(self.game_settings.pipe_head_width, self.game_settings.pipe_head_height)
 		self.head.head_image.midbottom = self.pipe_image.midbottom
+
+		self.xp = self.pipe_image.x
+		self.xh = self.head.head_image.x
+	def move(self):
+		self.xp -= 0.5
+		self.xh -= 0.5
+		self.pipe_image.x = self.xp
+		self.head.head_image.x = self.xh
+
+
 
 	def show_pipe(self):
 		pygame.draw.rect(self.screen, self.game_settings.pipe_color, self.pipe_image)
