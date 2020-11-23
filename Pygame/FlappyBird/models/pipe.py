@@ -21,7 +21,7 @@ class Pipe(Sprite):
 		self.pipe_image = pygame.Rect(0,0,self.game_settings.pipe_width,self.game_settings.pipe_height)
 
 		self.pipe_image.topright = self.screen_rect.topright
-		self.pipe_image.x -= 50
+		self.pipe_image.x += 50
 
 
 		#Memasukkan Kepala Pipa
