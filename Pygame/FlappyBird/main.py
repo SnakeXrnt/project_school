@@ -1,9 +1,10 @@
 import pygame
 from random import randint
 #OUR OWN MODULE
-from controller import settings
+from controller.settings import Settings
 
-from models import platform, pipe
+from models.platform import Platform
+from models.pipe import Pipe
 
 class FlappyBirdGame:
 
@@ -12,13 +13,13 @@ class FlappyBirdGame:
 		##############################################
 		#OBJECT yang INVISIBLE behind the screen
 		#############################################
-		self.game_settings = settings.Settings()
+		self.game_settings = Settings()
 
 		self.screen = pygame.display.set_mode([self.game_settings.screen_width, self.game_settings.screen_height])
 		##############################################
 		#SINGLE OBJECT/MODELS in OUR GAME (Object in Object)
 		##############################################
-		self.game_platform = platform.Platform(self)
+		self.game_platform = Platform(self)
 
 		##############################################
 		#GROUP OBJECT/MODELS in OUR GAME (Object in Object)
@@ -67,13 +68,14 @@ class FlappyBirdGame:
 
 	def create_pipes(self):
 		screen_rect = self.screen.get_rect()
+		platform_rect = self.game_platform.image_rect
 		gap = screen_rect.height//5
 
-		pipe_top = pipe.Pipe(self)
-		pipe_bottom = pipe.Pipe(self)
+		pipe_top = Pipe(self)
+		pipe_bottom = Pipe(self)
 
 		#Atur ulang tinggi dari pipe_top
-		random_height_pipe_top = randint(screen_rect.height//5, 4*screen_rect.height//5)
+		random_height_pipe_top = randint(screen_rect.height//5 + 100, 4*screen_rect.height//5) - platform_rect.height
 		pipe_top.pipe_image.height = random_height_pipe_top
 		pipe_top.head.head_image.midbottom = pipe_top.pipe_image.midbottom
 
