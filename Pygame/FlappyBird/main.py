@@ -53,10 +53,19 @@ class FlappyBirdGame:
 
 	def rg_update_screen(self):
 		self.screen.blit(self.bg_screen, [0,0])
-		self.game_platform.show_platform()
+		#self.game_platform.show_platform()
 		self.show_pipes()
+		self.update_platform()
 		#self.game_pipe.show_pipe()
 		pygame.display.flip()
+
+	#######################
+	#PLATFORM
+	######################
+
+	def update_platform(self):
+		self.game_platform.show_platform()
+		self.game_platform.move()
 
 	######################
 	#PIPE
@@ -65,6 +74,17 @@ class FlappyBirdGame:
 		pipes = self.game_pipes.sprites()
 		for pipe in pipes:
 			pipe.show_pipe()
+			pipe.move()
+			self.check_pipes(pipe)
+
+	def check_pipes(self,pipe):
+		if pipe.head.head_image.right <= 0 :
+			self.game_pipes.remove(pipe)
+
+		if len(self.game_pipes) == 0:
+			self.create_pipes()
+
+
 
 	def create_pipes(self):
 		screen_rect = self.screen.get_rect()
@@ -75,7 +95,11 @@ class FlappyBirdGame:
 		pipe_bottom = Pipe(self)
 
 		#Atur ulang tinggi dari pipe_top
+<<<<<<< HEAD
 		random_height_pipe_top = randint(screen_rect.height//5 + 100, 4*screen_rect.height//5) - platform_rect.height
+=======
+		random_height_pipe_top = randint(screen_rect.height//5 + 100, 4*screen_rect.height//5) - (platform_rect.height + 50)
+>>>>>>> 2af04ac12b5fb35c31370c016e4cfbd1ccae397b
 		pipe_top.pipe_image.height = random_height_pipe_top
 		pipe_top.head.head_image.midbottom = pipe_top.pipe_image.midbottom
 
