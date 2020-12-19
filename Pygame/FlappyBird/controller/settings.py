@@ -23,7 +23,10 @@ class Settings:
 		self.pipe_head_width = 60
 		self.pipe_head_height = 25
 
-		self.pipe_number = 0
+		#self.pipe_number = 0
 
-		#controller settings
-		self.platform_speed = 0.5
+
+		#PLATFORM SETTINGS
+		self.platform_speed = 0.00000001
+
+		self.bird_life = 3

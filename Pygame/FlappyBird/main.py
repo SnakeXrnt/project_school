@@ -2,6 +2,7 @@ import pygame
 from random import randint
 #OUR OWN MODULE
 from controller.settings import Settings
+from controller.game_stats import GameStats
 
 from models.platform import Platform
 from models.pipe import Pipe
@@ -15,6 +16,7 @@ class FlappyBirdGame:
 		#OBJECT yang INVISIBLE behind the screen
 		#############################################
 		self.game_settings = Settings()
+		self.game_stat = GameStats(self)
 
 		self.screen = pygame.display.set_mode([self.game_settings.screen_width, self.game_settings.screen_height])
 		##############################################
@@ -53,28 +55,71 @@ class FlappyBirdGame:
 		for event in events:
 			if event.type == pygame.QUIT:
 				self.running = False
-
 			elif event.type == pygame.KEYDOWN:
-				self.rg_e_check_keydown(event)
-			elif event.type== pygame.KEYUP:
-				self.rg_e_check_keyup(event)
+				self.rg_e_check_keydown_events(event)
+			elif event.type == pygame.KEYUP:
+				self.rg_e_check_keyup_events(event)
 
-	def rg_e_check_keydown(self,event):
-		print(event)
-	def rg_e_check_keyup(self,event):
-		print(event)
+	def rg_e_check_keydown_events(self, event):
+		if event.key == pygame.K_SPACE:
+			self.game_bird.is_fly = True
+			self.update_pipes()
+
+	def update_pipes(self):
+ 		self.show_pipes()
+
+
+
+
+
+	def rg_e_check_keyup_events(self, event):
+		if event.key == pygame.K_SPACE:
+			self.game_bird.is_fly = False
+			self.game_bird.is_fall = True
 
 	def rg_update_screen(self):
+		FPS = 180
+		fpsClock = pygame.time.Clock()
 		self.screen.blit(self.bg_screen, [0,0])
-		#self.game_platform.show_platform()
-		self.show_pipes()
 		self.update_bird()
+		self.update_pipes()
 		self.update_platform()
-
-		#self.game_pipe.show_pipe()
 		pygame.display.flip()
+		fpsClock.tick(FPS)
 
-	#######################
+	######################
+	#BIRD
+	######################
+	def bird_hit_pipe(self):
+		if pygame.sprite.spritecollideany(self.game_bird,self.game_pipes):
+			return True
+		else :
+			return False
+
+
+
+	def bird_on_platform(self):
+		if self.game_bird.image_rect.bottom >= self.game_platform.image_rect.top:
+			return True
+		else :
+			return False
+
+	def bird_on_top_edge(self):
+		screen_rect = self.screen.get_rect()
+		if self.game_bird.image_rect.top <= screen_rect.top:
+			return True
+		else :
+			return False
+
+
+	def update_bird(self):
+		if self.bird_on_platform() == False and self.bird_on_top_edge() == False and self.bird_hit_pipe() == False:
+			self.game_bird.move()
+
+		self.game_bird.show_bird()
+
+
+	######################
 	#PLATFORM
 	######################
 
@@ -82,34 +127,34 @@ class FlappyBirdGame:
 		self.game_platform.show_platform()
 		self.game_platform.move()
 
-	########################
-	#bird mode
-	######################## \
-	def update_bird(self):
-		self.game_bird.show_bird()
-
 
 	######################
 	#PIPE
 	######################
-	def show_pipes(self):
-		pipes = self.game_pipes.sprites()
-		for pipe in pipes:
-			pipe.show_pipe()
-			pipe.move()
-			self.check_pipes(pipe)
 
-	def check_pipes(self,pipe):
-		if pipe.head.head_image.right <= 0 :
+
+
+
+	def check_pipes(self, pipe):
+		if pipe.head.head_image.right <= 0:
 			self.game_pipes.remove(pipe)
-
+			#print(len(self.game_pipes))
+			#print('removed')
 		if len(self.game_pipes) == 0:
 			self.create_pipes()
 
 
 
+	def show_pipes(self):
+		pipes = self.game_pipes.sprites()
+		for pipe in pipes:
+			self.check_pipes(pipe)
+			pipe.show_pipe()
+			pipe.move()
+
 
 	def create_pipes(self):
+		#self.game_settings.pipe_number += 1
 		screen_rect = self.screen.get_rect()
 		platform_rect = self.game_platform.image_rect
 		gap = screen_rect.height//5
@@ -118,10 +163,7 @@ class FlappyBirdGame:
 		pipe_bottom = Pipe(self)
 
 		#Atur ulang tinggi dari pipe_top
-
-		random_height_pipe_top = randint(screen_rect.height//5 + 100, 4*screen_rect.height//5) - platform_rect.height
-
-		random_height_pipe_top = randint(screen_rect.height//5 + 100, 4*screen_rect.height//5) - (platform_rect.height + 50)
+		random_height_pipe_top = randint(screen_rect.height//5 + 100, 4*screen_rect.height//5) - (platform_rect.height+50)
 		pipe_top.pipe_image.height = random_height_pipe_top
 		pipe_top.head.head_image.midbottom = pipe_top.pipe_image.midbottom
 
@@ -134,7 +176,6 @@ class FlappyBirdGame:
 
 		self.game_pipes.add(pipe_top)
 		self.game_pipes.add(pipe_bottom)
-
 
 
 game = FlappyBirdGame()

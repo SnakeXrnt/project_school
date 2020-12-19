@@ -5,9 +5,8 @@ from tkinter import messagebox as msg
 from time import strftime
 import os
 import tkinter.ttk as ttk
-from ttkthemes import ThemedStyle
+#from ttkthemes import ThemedStyle
 from json import *
-
 def register():
     global register_screen
     register_screen = Tk()
@@ -162,6 +161,7 @@ def main_account_screen():
     Label(text="").pack()
     Button(text="Login",  command = login).pack()
     Label(text="").pack()
+
 
 
 #login()
