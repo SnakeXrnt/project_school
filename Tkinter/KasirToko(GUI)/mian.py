@@ -319,6 +319,7 @@ def Home():
             new = Toplevel(window)
             code = kode_barang.get()
 
+
             f = open('barang.json','r+')
             data = load(f)
             stock_old = data[code]['jumlah']
@@ -332,16 +333,56 @@ def Home():
                 updt = stock_new.get()
                 f = open('barang.json','r')
                 data = load(f)
-                data.update()
+                name = data[code]['Nama']
+                price = data[code]['Harga']
+                data[code] = {
+                    'Nama' : name,
+                    'Harga' : price,
+                    'Jumlah' : updt
+
+                }
                 with open('barang.json','w') as d:
                     dump(data,d)
 
             Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
 
-        Button(ubah_jmlh_stck1,text='SAVE!',command=new).grid(row=2,column=2)
+        Button(new,text='OK',command=new).grid(row=2,column=2)
+
+    def ubah_harga():
+        ubh_hrga = Toplevel(window)
+        Label(ubh_hrga,text='Kode barang \t : ').grid(row=1,column=1)
+        kode_barang= StringVar()
+        Entry(ubh_hrga,textvariable=kode_barang).grid(row=1,column=2)
+        def new():
+            new = Toplevel(window)
+            code = kode_barang.get()
 
 
+            f = open('barang.json','r+')
+            data = load(f)
+            stock_old = data[code]['Harga']
+            Label(new,text='Harga sekarang : ').grid(row=1,column=1)
+            Label(new,text=stock_old).grid(row=1,column=2)
+            Label(new,text='jumlah stock baru : ').grid(row=2,column=1)
+            stock_new = IntVar()
+            Entry(new,textvariable=stock_new).grid(row=2,column=2)
 
+            def save():
+                updt = stock_new.get()
+                f = open('barang.json','r')
+                data = load(f)
+                name = data[code]['Nama']
+                Stock = data[code]['Jumlah']
+                data[code] = {
+                    'Nama' : name,
+                    'Harga' : updt,
+                    'Jumlah' : Stock
+
+                }
+                with open('barang.json','w') as d:
+                    dump(data,d)
+
+            Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
 
 
 
@@ -351,7 +392,7 @@ def Home():
     Button(tab1,text='MASUKAN BARANG BARU',command=masukan_barang_baru).grid(row=3,column=0,padx=30,pady=20)
     Button(tab1,text='HAPUS BARANG',command=ubah_kode_barang).grid(row=5,column=0,padx=30,pady=20)
     Button(tab1,text='UBAH JUMLAH STOCK',command=ubah_jumlah_stock).grid(row=7,column=0,padx=30,pady=20)
-    Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH HARGA BARANG',command=ubah_harga).grid(row=9,column=0,padx=30,pady=20)
 
     Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=20)
     Button(tab1,text='BUKA LIST HARGA').grid(row=5,column=2,padx=30,pady=20)
