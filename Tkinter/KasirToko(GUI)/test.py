@@ -8,8 +8,6 @@ data = {
 
 data = load(f)
 
-integer = input('CODE : ')
+v = input('CODE : ')
 
-p = data[integer{jumlah}]
-
-print(p)
+print(data[v]['jumlah'])

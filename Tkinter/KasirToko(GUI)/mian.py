@@ -306,26 +306,41 @@ def Home():
             with open('barang.json' , 'w') as d:
                 dump(data,d)
 
+
+
         Button(ubh_kde,text='SAVE!',command=ubh_kde_brng).grid(row=2,column=2)
 
     def ubah_jumlah_stock():
-
         ubah_jmlh_stck1 = Toplevel(window)
         Label(ubah_jmlh_stck1,text='Kode barang \t : ').grid(row=1,column=1)
         kode_barang= StringVar()
         Entry(ubah_jmlh_stck1,textvariable=kode_barang).grid(row=1,column=2)
-
         def new():
-
             new = Toplevel(window)
-            del ubah_jmlh_stck1
+            code = kode_barang.get()
 
             f = open('barang.json','r+')
-            
+            data = load(f)
+            stock_old = data[code]['jumlah']
+            Label(new,text='jumlah stock sekarang : ').grid(row=1,column=1)
+            Label(new,text=stock_old).grid(row=1,column=2)
+            Label(new,text='jumlah stock baru : ').grid(row=2,column=1)
+            stock_new = IntVar()
+            Entry(new,textvariable=stock_new).grid(row=2,column=2)
 
-            Label()
+            def save():
+                updt = stock_new.get()
+                f = open('barang.json','r')
+                data = load(f)
+                data.update()
+                with open('barang.json','w') as d:
+                    dump(data,d)
+
+            Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
 
         Button(ubah_jmlh_stck1,text='SAVE!',command=new).grid(row=2,column=2)
+
+
 
 
 
