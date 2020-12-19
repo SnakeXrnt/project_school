@@ -346,7 +346,7 @@ def Home():
 
             Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
 
-        Button(new,text='OK',command=new).grid(row=2,column=2)
+        Button(ubah_jmlh_stck1,text='OK',command=new).grid(row=2,column=2)
 
     def ubah_harga():
         ubh_hrga = Toplevel(window)
@@ -363,7 +363,7 @@ def Home():
             stock_old = data[code]['Harga']
             Label(new,text='Harga sekarang : ').grid(row=1,column=1)
             Label(new,text=stock_old).grid(row=1,column=2)
-            Label(new,text='jumlah stock baru : ').grid(row=2,column=1)
+            Label(new,text='Harga baru : ').grid(row=2,column=1)
             stock_new = IntVar()
             Entry(new,textvariable=stock_new).grid(row=2,column=2)
 
@@ -372,7 +372,7 @@ def Home():
                 f = open('barang.json','r')
                 data = load(f)
                 name = data[code]['Nama']
-                Stock = data[code]['Jumlah']
+                Stock = data[code]['jumlah']
                 data[code] = {
                     'Nama' : name,
                     'Harga' : updt,
@@ -383,6 +383,8 @@ def Home():
                     dump(data,d)
 
             Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
+
+        Button(ubh_hrga,text='OK',command=new).grid(row=2,column=2)
 
 
 
