@@ -21,4 +21,4 @@ button_play.grid(column=0, row=1)
 button_pause = Button(window, font=('Comic Sans MS', 18, 'bold'), text='pause')
 button_pause.grid(column=1, row=1)
 
-window.mainloop()ethan
+window.mainloop()
