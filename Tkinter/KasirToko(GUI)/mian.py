@@ -7,6 +7,8 @@ import os
 import tkinter.ttk as ttk
 #from ttkthemes import ThemedStyle
 from json import *
+from datetime import  datetime
+
 def register():
     global register_screen
     register_screen = Tk()
@@ -65,6 +67,7 @@ def login():
     button.pack()
 
 
+
 # Implementing event on register button
 
 def register_user():
@@ -89,6 +92,7 @@ def login_verify():
     password1 = password_verify.get()
     username_login_entry.delete(0, END)
     password_login_entry.delete(0, END)
+    status = '.'
 
     list_of_files = os.listdir()
     if username1 in list_of_files:
@@ -96,12 +100,32 @@ def login_verify():
         verify = file1.read().splitlines()
         if password1 in verify:
             login_sucess()
+            status += 'sucses'
 
         else:
             password_not_recognised()
-
+            status += 'not sucses'
     else:
         user_not_found()
+        status += 'not sucses'
+
+    data = {
+
+    }
+
+    now = datetime.now()
+
+    with open('login_info.json' , 'r') as f:
+        data = load(f)
+
+    data[str(now)] = {
+        'user' : username1,
+        'status' : status
+    }
+
+    with open('login_info.json', 'w') as f:
+    	dump(data, f)
+
 
 # Designing popup for login success
 
