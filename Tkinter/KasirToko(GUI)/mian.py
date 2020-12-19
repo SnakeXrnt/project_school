@@ -234,14 +234,72 @@ def Home():
        label.after(200, digitalclock)
     digitalclock()
 
+    def msk_brng_bru():
+        global msk_brng
+        data = {
+
+        }
+        f = open('barang.json','r')
+        data = load(f)
+        name = nama_barang.get()
+        price = Harga_barang.get()
+        code = kode_barang.get()
+
+        data[name] = {
+            'Harga' : price,
+            'Kode' : code
+        }
+
+        with open('barang.json','w') as d:
+            dump(data,d)
+        msk_brng.destroy()
+
+    def masukan_barang_baru():
+        msk_brng = Tk()
+        Label(msk_brng,text='Nama barang \t :').grid(row=1,column=1)
+        nama_barang = StringVar()
+        Entry(msk_brng,textvariable=nama_barang).grid(row=1,column=2)
+
+        Label(msk_brng,text='Harga Barang \t : ').grid(row=2,column=1)
+        Harga_barang = StringVar()
+        Entry(msk_brng,textvariable=Harga_barang).grid(row=2,column=2)
+
+
+        Label(msk_brng,text='Kode barang \t : ').grid(row=3,column=1)
+        kode_barang = StringVar()
+        Entry(msk_brng,textvariable=kode_barang).grid(row=3,column=2)
+
+        Button(msk_brng,text='SAVE !!',command=msk_brng_bru).grid(row=4,column=2)
+
+
+    def ubah_kode_barang():
+        ubh_kde = Toplevel(window)
+        Label(ubh_kde,text='Kode barang lama \t : ').grid(row=1,column=1)
+        kode_barang_lama = StringVar()
+        Entry(ubh_kde,textvariable=kode_barang_lama).grid(row=1,column=2)
+
+        Label(ubh_kde,text='Kode barang baru \t : ').grid(row=2,column=1)
+        kode_barang_baru = StringVar()
+        Entry(ubh_kde,textvariable=kode_barang_baru).grid(row=2,column=2)
+
+        Button(ubh_kde,text='SAVE!').grid(row=3,column=2)
+
+    def ubah_jumlah_stock():
+        pass
+        '''ubah_jmlh_stck1 = Toplevel(window)
+        Label(ubah_jmlh_stck1,text='Kode barang \t : ').grid(row=1,column=1)
+        kode_barang= StringVar()
+        Entry(ubah_jmlh_stck1,textvariable=kode_barang).grid(row=1,column=2)'''
+
+
 
 
 
     Label(tab1,text='SELAMAT DATANG DI TOKO TERANG JAYA',font=('cabari',25,'bold')).grid(column=0,row=1,columnspan=11)
 
-    Button(tab1,text='MASUKAN BARANG BARU').grid(row=3,column=0,padx=30,pady=20)
-    Button(tab1,text='UBAH KODE BARANG').grid(row=5,column=0,padx=30,pady=20)
-    Button(tab1,text='UBAH JUMLAH STOCK').grid(row=7,column=0,padx=30,pady=20)
+    Button(tab1,text='MASUKAN BARANG BARU',command=masukan_barang_baru).grid(row=3,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH KODE BARANG',command=ubah_kode_barang).grid(row=5,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH JUMLAH STOCK',command=ubah_jumlah_stock).grid(row=7,column=0,padx=30,pady=20)
     Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=20)
 
     Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=20)
@@ -346,7 +404,7 @@ def Home():
 
 
 
-login()
+Home()
 
 
 
