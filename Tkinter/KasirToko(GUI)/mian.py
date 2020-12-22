@@ -80,78 +80,42 @@ def Home():
         expression = ""
 
     expression = ""
-
     # 'StringVar()' :It is used to get the instance of input field
-
     input_text = StringVar()
-
     # Let us creating a frame for the input field
-
     input_frame = Frame(win, width=312, height=50 )
-
     input_frame.pack(side=TOP)
-
     #Let us create a input field inside the 'Frame'
-
     input_field = Entry(input_frame, font=('arial', 18, 'bold'), textvariable=input_text, width=50,  justify=RIGHT)
-
     input_field.grid(row=0, column=0)
-
     input_field.pack(ipady=10) # 'ipady' is internal padding to increase the height of input field
-
     #Let us creating another 'Frame' for the button below the 'input_frame'
-
     btns_frame = Frame(win, width=312, height=272.5)
-
     btns_frame.pack()
-
     # first row
-
     clear = Button(btns_frame, text = "C", width = 32,    cursor = "hand2", command = lambda: bt_clear()).grid(row = 0, column = 0, columnspan = 3, padx = 1, pady = 1)
-
     divide = Button(btns_frame, text = "/", width = 10,    cursor = "hand2", command = lambda: btn_click("/")).grid(row = 0, column = 3, padx = 1, pady = 1)
-
     # second row
-
     seven = Button(btns_frame, text = "7", width = 10,    cursor = "hand2", command = lambda: btn_click(7)).grid(row = 1, column = 0, padx = 1, pady = 1)
-
     eight = Button(btns_frame, text = "8", width = 10,    cursor = "hand2", command = lambda: btn_click(8)).grid(row = 1, column = 1, padx = 1, pady = 1)
-
     nine = Button(btns_frame, text = "9", width = 10,   cursor = "hand2", command = lambda: btn_click(9)).grid(row = 1, column = 2, padx = 1, pady = 1)
-
     multiply = Button(btns_frame, text = "*", width = 10,    cursor = "hand2", command = lambda: btn_click("*")).grid(row = 1, column = 3, padx = 1, pady = 1)
-
     # third row
-
     four = Button(btns_frame, text = "4", width = 10,    cursor = "hand2", command = lambda: btn_click(4)).grid(row = 2, column = 0, padx = 1, pady = 1)
-
     five = Button(btns_frame, text = "5", width = 10,  cursor = "hand2", command = lambda: btn_click(5)).grid(row = 2, column = 1, padx = 1, pady = 1)
-
     six = Button(btns_frame, text = "6", width = 10,  cursor = "hand2", command = lambda: btn_click(6)).grid(row = 2, column = 2, padx = 1, pady = 1)
-
     minus = Button(btns_frame, text = "-", width = 10,    cursor = "hand2", command = lambda: btn_click("-")).grid(row = 2, column = 3, padx = 1, pady = 1)
-
     # fourth row
-
     one = Button(btns_frame, text = "1", width = 10,  cursor = "hand2", command = lambda: btn_click(1)).grid(row = 3, column = 0, padx = 1, pady = 1)
-
     two = Button(btns_frame, text = "2", width = 10,  cursor = "hand2", command = lambda: btn_click(2)).grid(row = 3, column = 1, padx = 1, pady = 1)
-
     three = Button(btns_frame, text = "3", width = 10,  cursor = "hand2", command = lambda: btn_click(3)).grid(row = 3, column = 2, padx = 1, pady = 1)
-
     plus = Button(btns_frame, text = "+", width = 10,    cursor = "hand2", command = lambda: btn_click("+")).grid(row = 3, column = 3, padx = 1, pady = 1)
-
     # fourth row
-
     zero = Button(btns_frame, text = "0", width = 21,  cursor = "hand2", command = lambda: btn_click(0)).grid(row = 4, column = 0, columnspan = 2, padx = 1, pady = 1)
-
     point = Button(btns_frame, text = ".", width = 10,    cursor = "hand2", command = lambda: btn_click(".")).grid(row = 4, column = 2, padx = 1, pady = 1)
-
     equals = Button(btns_frame, text = "=", width = 10,    cursor = "hand2", command = lambda: bt_equal()).grid(row = 4, column = 3, padx = 1, pady = 1)
-
     label = Label(tab1, font=("Courier", 30, 'bold'))
     label.grid(row =0, column=0)
-
     def digitalclock():
        text_input = strftime("%H:%M:%S")
        label.config(text=text_input)
@@ -499,10 +463,51 @@ def Home():
                 Label(error,text='Jumlah Tidak Cukup Gengsss')
         Button(new,text='OK',command=lapor_pembelian_main).grid(row=3,column=2)
 
+    def lapor_error():
+        error = Toplevel(window)
+        Label(error,text='Masukan error atau \n keluhan yang terjadi : ').grid(row=1,column=1)
+        error_happen = StringVar()
+        now = str(datetime.now())
+
+        Entry(error,textvariable=error_happen).grid(row=1,column=2)
+        def save_error():
+            error2 = error_happen.get()
+            styles = getSampleStyleSheet()
+            report = SimpleDocTemplate(f'report/LAPORAN ERROR.pdf')
+            report_title = Paragraph("ERROR YANG TERJADI DAN MASUKAN", styles["h1"])
+            report.title = (str(now))
+            report.build([report_title])
+
+            g = open('error.json','r')
+            fruit = {}
+            fruit = load(g)
+
+            fruit[now] = {
+                    'error':error2
+            }
+
+            with open('error.json','w') as h:
+                dump(fruit,h)
+
+
+
+            table_data = []
+            for k, v in fruit.items():
+                table_data.append([k, v])
+
+
+            report_table = Table(data=table_data)
+            report.build([report_title, report_table])
+            from reportlab.lib import colors
+
+            table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
+            report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
+            report.build([report_title, report_table])
+        Button(error,text='LAPORKAN',command=save_error).grid(row=2,column=2)
 
 
     Button(tab1,text='LAPOR PEMBELIAN',command=lapor_pembelian).grid(row=3,column=6,padx=30,pady=20)
-    Button(tab1,text='LAPOR ERROR').grid(row=5,column=6,padx=30,pady=20)
+    Button(tab1,text='LAPOR ERROR',command=lapor_error).grid(row=5,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR PENAMBAHAN UANG').grid(row=7,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR PENAGMBILAN UANG').grid(row=9,column=6,padx=30,pady=20)
 
