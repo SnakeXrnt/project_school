@@ -236,155 +236,66 @@ def Home():
 
 
 
-
     def masukan_barang_baru():
-        msk_brng = Toplevel(window)
 
         def msk_brng_bru():
-            global msk_brng
+            #global msk_brng
             data = {
 
             }
             f = open('barang.json','r')
             data = load(f)
-            name = nama_barang.get()
+            name = nam_barang.get()
             price = Harga_barang.get()
             code = kode_barang.get()
-            quantity = Jumlah_barang.get()
 
-            data[code] = {
+            data[name] = {
                 'Nama' : name,
                 'Harga' : price,
-                'jumlah' : quantity
-
+                'Kode' : code
             }
-
-            print (data)
 
             with open('barang.json','w') as d:
                 dump(data,d)
             msk_brng.destroy()
 
+        msk_brng = Tk()
+
         Label(msk_brng,text='Nama barang \t :').grid(row=1,column=1)
         nama_barang = StringVar()
-        nama_barang_tool = Entry(msk_brng,textvariable=nama_barang).grid(row=1,column=2)
+        entry_nama_barang = Entry(msk_brng,textvariable=nama_barang).grid(row=1,column=2)
 
         Label(msk_brng,text='Harga Barang \t : ').grid(row=2,column=1)
-        Harga_barang = IntVar()
-        harga_barang_tool = Entry(msk_brng,textvariable=Harga_barang).grid(row=2,column=2)
+        Harga_barang = StringVar()
+        entry_nama_harga = Entry(msk_brng,textvariable=Harga_barang).grid(row=2,column=2)
 
 
         Label(msk_brng,text='Kode barang \t : ').grid(row=3,column=1)
         kode_barang = StringVar()
-        kode_barang_tool = Entry(msk_brng,textvariable=kode_barang).grid(row=3,column=2)
+        entry_kode_barang = Entry(msk_brng,textvariable=kode_barang).grid(row=3,column=2)
 
-        Label(msk_brng,text='Jumah Stock \t : ').grid(row=4,column=1)
-        Jumlah_barang = IntVar()
-        Jumlah_barang_tool = Entry(msk_brng,textvariable=Jumlah_barang).grid(row=4,column=2)
-
-
-
-
-        Button(msk_brng,text='SAVE !!',command=msk_brng_bru).grid(row=5,column=2)
+        Button(msk_brng,text='SAVE !!',command=msk_brng_bru).grid(row=4,column=2)
 
 
     def ubah_kode_barang():
         ubh_kde = Toplevel(window)
-        Label(ubh_kde,text='Kode barang yang akan di hapus \t : ').grid(row=1,column=1)
-        kode_barang = StringVar()
-        Entry(ubh_kde,textvariable=kode_barang).grid(row=2,column=1)
+        Label(ubh_kde,text='Kode barang lama \t : ').grid(row=1,column=1)
+        kode_barang_lama = StringVar()
+        Entry(ubh_kde,textvariable=kode_barang_lama).grid(row=1,column=2)
 
-        def ubh_kde_brng():
-            f = open('barang.json','r')
-            data = {
+        Label(ubh_kde,text='Kode barang baru \t : ').grid(row=2,column=1)
+        kode_barang_baru = StringVar()
+        Entry(ubh_kde,textvariable=kode_barang_baru).grid(row=2,column=2)
 
-            }
-            data = load(f)
-            code = kode_barang.get()
-
-            data.pop(code,None)
-            with open('barang.json' , 'w') as d:
-                dump(data,d)
-
-
-
-        Button(ubh_kde,text='SAVE!',command=ubh_kde_brng).grid(row=2,column=2)
+        Button(ubh_kde,text='SAVE!').grid(row=3,column=2)
 
     def ubah_jumlah_stock():
-        ubah_jmlh_stck1 = Toplevel(window)
+        pass
+        '''ubah_jmlh_stck1 = Toplevel(window)
         Label(ubah_jmlh_stck1,text='Kode barang \t : ').grid(row=1,column=1)
         kode_barang= StringVar()
-        Entry(ubah_jmlh_stck1,textvariable=kode_barang).grid(row=1,column=2)
-        def new():
-            new = Toplevel(window)
-            code = kode_barang.get()
+        Entry(ubah_jmlh_stck1,textvariable=kode_barang).grid(row=1,column=2)'''
 
-
-            f = open('barang.json','r+')
-            data = load(f)
-            stock_old = data[code]['jumlah']
-            Label(new,text='jumlah stock sekarang : ').grid(row=1,column=1)
-            Label(new,text=stock_old).grid(row=1,column=2)
-            Label(new,text='jumlah stock baru : ').grid(row=2,column=1)
-            stock_new = IntVar()
-            Entry(new,textvariable=stock_new).grid(row=2,column=2)
-
-            def save():
-                updt = stock_new.get()
-                f = open('barang.json','r')
-                data = load(f)
-                name = data[code]['Nama']
-                price = data[code]['Harga']
-                data[code] = {
-                    'Nama' : name,
-                    'Harga' : price,
-                    'Jumlah' : updt
-
-                }
-                with open('barang.json','w') as d:
-                    dump(data,d)
-
-            Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
-
-        Button(ubah_jmlh_stck1,text='OK',command=new).grid(row=2,column=2)
-
-    def ubah_harga():
-        ubh_hrga = Toplevel(window)
-        Label(ubh_hrga,text='Kode barang \t : ').grid(row=1,column=1)
-        kode_barang= StringVar()
-        Entry(ubh_hrga,textvariable=kode_barang).grid(row=1,column=2)
-        def new():
-            new = Toplevel(window)
-            code = kode_barang.get()
-
-
-            f = open('barang.json','r+')
-            data = load(f)
-            stock_old = data[code]['Harga']
-            Label(new,text='Harga sekarang : ').grid(row=1,column=1)
-            Label(new,text=stock_old).grid(row=1,column=2)
-            Label(new,text='Harga baru : ').grid(row=2,column=1)
-            stock_new = IntVar()
-            Entry(new,textvariable=stock_new).grid(row=2,column=2)
-
-            def save():
-                updt = stock_new.get()
-                f = open('barang.json','r')
-                data = load(f)
-                name = data[code]['Nama']
-                Stock = data[code]['jumlah']
-                data[code] = {
-                    'Nama' : name,
-                    'Harga' : updt,
-                    'Jumlah' : Stock
-
-                }
-                with open('barang.json','w') as d:
-                    dump(data,d)
-
-            Button(new,text='SAVE!!',command=save).grid(row=3,column=2)
-
-        Button(ubh_hrga,text='OK',command=new).grid(row=2,column=2)
 
 
 
@@ -392,9 +303,9 @@ def Home():
     Label(tab1,text='SELAMAT DATANG DI TOKO TERANG JAYA',font=('cabari',25,'bold')).grid(column=0,row=1,columnspan=11)
 
     Button(tab1,text='MASUKAN BARANG BARU',command=masukan_barang_baru).grid(row=3,column=0,padx=30,pady=20)
-    Button(tab1,text='HAPUS BARANG',command=ubah_kode_barang).grid(row=5,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH KODE BARANG',command=ubah_kode_barang).grid(row=5,column=0,padx=30,pady=20)
     Button(tab1,text='UBAH JUMLAH STOCK',command=ubah_jumlah_stock).grid(row=7,column=0,padx=30,pady=20)
-    Button(tab1,text='UBAH HARGA BARANG',command=ubah_harga).grid(row=9,column=0,padx=30,pady=20)
+    Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=20)
 
     Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=20)
     Button(tab1,text='BUKA LIST HARGA').grid(row=5,column=2,padx=30,pady=20)
@@ -481,8 +392,8 @@ def Home():
     sapa4 =Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('arial',s)).grid(row=5,column=8)
     sapa3 =Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('arial',s)).grid(row=6,column=8)
 
-    sapa2 =Label(tab1,text=selamat,font=('arial',s)).grid(row=7,column=8)
-    sapa1 =Label(tab1,text=semangat,font=('arial',s)).grid(row=9,column=8)
+    sapa2 =Label(tab1,text=(selamat),font=('arial',s)).grid(row=7,column=8)
+    sapa1 =Label(tab1,text=(semangat),font=('arial',s)).grid(row=9,column=8)
 
 
 
