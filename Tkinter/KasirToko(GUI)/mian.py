@@ -1,233 +1,25 @@
-from tkinter import Tk, ttk , Label, StringVar, ttk, Entry, Button , LabelFrame , Menu , Frame
+
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox as msg
 from time import strftime
 import os
+import sys
 import tkinter.ttk as ttk
 #from ttkthemes import ThemedStyle
 from json import *
-from datetime import  datetime
+from datetime import *
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.platypus import Paragraph, Spacer, Table, Image
 from reportlab.lib.styles import getSampleStyleSheet
-
-def register():
-    global register_screen
-    register_screen = Tk()
-    register_screen.title("Register")
-    register_screen.geometry("300x250")
-
-    global username
-    global password
-    global username_entry
-    global password_entry
-    username = StringVar()
-    password = StringVar()
-
-    Label(register_screen, text="Please enter details below").pack()
-    Label(register_screen, text="").pack()
-    username_lable = Label(register_screen, text="Username * ")
-    username_lable.pack()
-    username_entry = Entry(register_screen, textvariable=username)
-    username_entry.pack()
-    password_lable = Label(register_screen, text="Password * ")
-    password_lable.pack()
-    password_entry = Entry(register_screen, textvariable=password, show='*')
-    password_entry.pack()
-    Label(register_screen, text="").pack()
-    Button(register_screen, text="Register",command = register_user).pack()
+global Home
 
 
-# Designing window for login
-
-def login():
-    global login_screen
-    login_screen = Tk()
-    login_screen.title("Login")
-    login_screen.geometry("300x250")
-    Label(login_screen, text="Please enter details below to login").pack()
-    Label(login_screen, text="").pack()
-
-    global username_verify
-    global password_verify
-
-    username_verify = StringVar()
-    password_verify = StringVar()
-
-    global username_login_entry
-    global password_login_entry
-
-    Label(login_screen, text="Username * ").pack()
-    username_login_entry = Entry(login_screen, textvariable=username_verify)
-    username_login_entry.pack()
-    Label(login_screen, text="").pack()
-    Label(login_screen, text="Password * ").pack()
-    password_login_entry = Entry(login_screen, textvariable=password_verify, show= '*')
-    password_login_entry.pack()
-    Label(login_screen, text="").pack()
-    button = Button(login_screen, text="Login", command = login_verify)
-    button.pack()
-
-
-
-# Implementing event on register button
-
-def register_user():
-
-    username_info = username.get()
-    password_info = password.get()
-
-    file = open(username_info, "w")
-    file.write(username_info + "\n")
-    file.write(password_info)
-    file.close()
-
-    username_entry.delete(0, END)
-    password_entry.delete(0, END)
-
-    Label(register_screen, text="Registration Success", font=("calibri", 11)).pack()
-
-# Implementing event on login button
-
-def login_verify():
-    username1 = username_verify.get()
-    password1 = password_verify.get()
-    username_login_entry.delete(0, END)
-    password_login_entry.delete(0, END)
-    status = '.'
-
-    list_of_files = os.listdir()
-    if username1 in list_of_files:
-        file1 = open(username1, "r")
-        verify = file1.read().splitlines()
-        if password1 in verify:
-            login_sucess()
-            status += 'sucses'
-
-        else:
-            password_not_recognised()
-            status += 'not sucses'
-    else:
-        user_not_found()
-        status += 'not sucses'
-
-    data = {
-
-    }
-
-    now = datetime.now()
-
-    with open('login_info.json' , 'r') as f:
-        data = load(f)
-
-    data[str(now)] = {
-        'user' : username1,
-        'status' : status
-    }
-
-    with open('login_info.json', 'w') as f:
-    	dump(data, f)
-    def buat_login_save1():
-        now = datetime.now()
-
-        q = str(now) +  ' LIST HARGA DAN STOCK BARANG.pdf'
-
-        styles = getSampleStyleSheet()
-        report = SimpleDocTemplate('report/LOGIN SAVE INFO.pdf')
-        report_title = Paragraph("LOGIN SAVE INFO", styles["h1"])
-        report.title = (str(now))
-        report.build([report_title])
-
-        fruit = {
-
-        }
-
-        f = open('login_info.json','r')
-
-        fruit = load(f)
-
-        table_data = []
-        for k, v in fruit.items():
-            table_data.append([k, v])
-
-
-        report_table = Table(data=table_data)
-        report.build([report_title, report_table])
-        from reportlab.lib import colors
-
-        table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
-        report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
-        report.build([report_title, report_table])
-    buat_login_save1()
-
-
-# Designing popup for login success
-
-def login_sucess():
-    global login_success_screen
-    login_success_screen = Toplevel(login_screen)
-    login_success_screen.title("Success")
-    login_success_screen.geometry("150x100")
-    Label(login_success_screen, text="Login Success \n Please close all login window to continue").pack()
-    Button(login_success_screen, text="OK", command=delete_login_success).pack()
-    Home()
-
-
-# Designing popup for login invalid password
-
-def password_not_recognised():
-    global password_not_recog_screen
-    password_not_recog_screen = Toplevel(login_screen)
-    password_not_recog_screen.title("Success")
-    password_not_recog_screen.geometry("150x100")
-    Label(password_not_recog_screen, text="Invalid Password ").pack()
-    Button(password_not_recog_screen, text="OK", command=delete_password_not_recognised).pack()
-
-# Designing popup for user not found
-
-def user_not_found():
-    global user_not_found_screen
-    user_not_found_screen = Toplevel(login_screen)
-    user_not_found_screen.title("Success")
-    user_not_found_screen.geometry("150x100")
-    Label(user_not_found_screen, text="User Not Found").pack()
-    Button(user_not_found_screen, text="OK", command=delete_user_not_found_screen).pack()
-
-# Deleting popups
-
-def delete_login_success():
-    login_success_screen.destroy()
-    login_screen.destroy()
-
-
-def delete_password_not_recognised():
-    password_not_recog_screen.destroy()
-
-
-def delete_user_not_found_screen():
-    user_not_found_screen.destroy()
-
-
-# Designing Main(first) window
-
-def main_account_screen():
-    global main_screen
-    main_screen = Tk()
-    main_screen.geometry("300x250")
-    main_screen.title("Account Login")
-    Label(text="Select Your Choice", font=("Calibri", 13)).pack()
-    Label(text="").pack()
-    Button(text="Login",  command = login).pack()
-    Label(text="").pack()
-
-
-
-#login()
 
 
 def Home():
+    global Home
     window = Tk()
     window.geometry('1000x600')
     window.title('Home')
@@ -276,30 +68,8 @@ def Home():
     def masukan_barang_baru():
         msk_brng = Toplevel(window)
 
-        def msk_brng_bru():
-            global msk_brng
-            data = {
 
-            }
-            f = open('barang.json','r')
-            data = load(f)
-            name = nama_barang.get()
-            price = Harga_barang.get()
-            code = kode_barang.get()
-            quantity = Jumlah_barang.get()
 
-            data[code] = {
-                'Nama' : name,
-                'Harga' : price,
-                'jumlah' : quantity
-
-            }
-
-            print (data)
-
-            with open('barang.json','w') as d:
-                dump(data,d)
-            msk_brng.destroy()
 
         Label(msk_brng,text='Nama barang \t :').grid(row=1,column=1)
         nama_barang = StringVar()
@@ -317,6 +87,29 @@ def Home():
         Label(msk_brng,text='Jumah Stock \t : ').grid(row=4,column=1)
         Jumlah_barang = IntVar()
         Jumlah_barang_tool = Entry(msk_brng,textvariable=Jumlah_barang).grid(row=4,column=2)
+
+        def msk_brng_bru():
+            data = {
+
+            }
+            f = open('barang.json','r')
+            data = load(f)
+            name = nama_barang.get()
+            price = Harga_barang.get()
+            code = str(kode_barang.get())
+            quantity = Jumlah_barang.get()
+
+            data[code] = {
+                'Nama' : name,
+                'Harga' : price,
+                'jumlah' : quantity
+
+            }
+
+            print (data)
+
+            with open('barang.json','w') as d:
+                dump(data,d)
 
 
 
@@ -435,10 +228,12 @@ def Home():
     def buat_list_stock():
         now = datetime.now()
 
+        b = str(now.strftime("%x"))
+
         q = str(now) +  ' LIST HARGA DAN STOCK BARANG.pdf'
 
         styles = getSampleStyleSheet()
-        report = SimpleDocTemplate('report/LIST HARGA DAN STOCK BARANG.pdf')
+        report = SimpleDocTemplate(f'report/LIST HARGA DAN STOCK BARANG.pdf')
         report_title = Paragraph("LIST HARGA DAN STOCK BARANG", styles["h1"])
         report.title = (str(now))
         report.build([report_title])
@@ -468,7 +263,8 @@ def Home():
         Label(new,text='List sudah dibuat di \n C:\github\Tkinter\KasirToko(GUI)\Report').grid(column=1,row=1)
         def del_new():
             del new
-        Button(new,text='OK').grid(row=2,column=1)
+
+        Button(new,text='OK',).grid(row=2,column=1)
 
 
     def buat_login_save():
@@ -509,14 +305,107 @@ def Home():
         Button(new,text='OK').grid(row=2,column=1)
 
 
+    def laporan_pembelian():
+        now = datetime.now()
+
+        b = str(now.strftime("%x"))
+
+        q = str(now) +  ' LIST HARGA DAN STOCK BARANG.pdf'
+
+        styles = getSampleStyleSheet()
+        report = SimpleDocTemplate(f'report/LAPORAN PEMBELIAN.pdf')
+        report_title = Paragraph("PEMBELIAN HARI INI", styles["h1"])
+        report.title = (str(now))
+        report.build([report_title])
+
+        fruit = {
+
+        }
+
+        f = open('pembelian.json','r')
+
+        fruit = load(f)
+
+        table_data = []
+        for k, v in fruit.items():
+            table_data.append([k, v])
+
+
+        report_table = Table(data=table_data)
+        report.build([report_title, report_table])
+        from reportlab.lib import colors
+
+        table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
+        report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
+        report.build([report_title, report_table])
+
+        new = Toplevel(window)
+        Label(new,text='List sudah dibuat di \n C:\github\Tkinter\KasirToko(GUI)\Report').grid(column=1,row=1)
+        def del_new():
+            del new
+
+        Button(new,text='OK',).grid(row=2,column=1)
+
+
+
 
 
     Button(tab1,text='BUKA MESIN KASIR{BETA}').grid(row=3,column=2,padx=30,pady=20)
     Button(tab1,text='BUAT LIST STOCK DAN HARGA',command=buat_list_stock).grid(row=5,column=2,padx=30,pady=20)
-    Button(tab1,text='BUAT LAPORAN PEMBELIAN HARI INI').grid(row=7,column=2,padx=30,pady=20)
+    Button(tab1,text='BUAT LAPORAN PEMBELIAN',command=laporan_pembelian).grid(row=7,column=2,padx=30,pady=20)
     Button(tab1,text='BUAT LOGIN SAVE INFO',command=buat_login_save).grid(row=9,column=2,padx=30,pady=20)
 
-    Button(tab1,text='LAPOR PEMBELIAN').grid(row=3,column=6,padx=30,pady=20)
+    def lapor_pembelian():
+        new = Toplevel(window)
+        Label(new,text='Kode barang yang di beli : ').grid(row=1,column=1)
+        kode_barang = StringVar()
+        Entry(new,textvariable=kode_barang).grid(row=1,column=2)
+        Label(new,text='Jumlah barang yang di beli : ').grid(row=2,column=1)
+        jumlah_dibeli = IntVar()
+        Entry(new,textvariable=jumlah_dibeli).grid(row=2,column=2)
+
+        def lapor_pembelian_main():
+            code = kode_barang.get()
+            quantity = jumlah_dibeli.get()
+            f = open('barang.json','r')
+            data = {}
+            data = load(f)
+            jumlah_awal = data[code]["jumlah"]
+            name = data[code]["Nama"]
+            price = data[code]['Harga']
+
+            if quantity < jumlah_awal :
+                jumlah_akhir = jumlah_awal - quantity
+                data[code] = {
+                    'Nama' : name,
+                    'Harga' : price,
+                    'jumlah' : jumlah_akhir
+                }
+
+                k = open('pembelian.json','r+')
+                report = {}
+                report = load(k)
+                harga_report = price * quantity
+                now = str(datetime.now())
+                report[now] = {
+                    'Kode' : code,
+                    'Nama' : name,
+                    'Jumlah Beli' : quantity,
+                    'Total Harga' : harga_report
+
+                }
+                with open('pembelian.json','w') as g:
+                    dump(report,g)
+                with open('barang.json','w') as d:
+                    dump(data,d)
+            else :
+                error = Tk()
+                Label(error,text='Jumlah Tidak Cukup Gengsss')
+        Button(new,text='OK',command=lapor_pembelian_main).grid(row=3,column=2)
+
+
+
+    Button(tab1,text='LAPOR PEMBELIAN',command=lapor_pembelian).grid(row=3,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR ERROR').grid(row=5,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR PENAMBAHAN UANG').grid(row=7,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR PENAGMBILAN UANG').grid(row=9,column=6,padx=30,pady=20)
@@ -557,7 +446,7 @@ def Home():
 
     Label(tab2,text='Settings',font=('arial',30,'bold')).grid(row=0,column=0)
     Label(tab2,text='Register a new user \t :',font=('arial',10)).grid(row=1,column=0,sticky='w')
-    Button(tab2,text="Register", command=register).grid(row=1,column=1,sticky='w')
+    Button(tab2,text="Register").grid(row=1,column=1,sticky='w')
     Label(tab2,text='Restart App \t \t :',font=('arial',10)).grid(row=2,column=0,sticky='w')
     Button(tab2,text='Restart',command=restart).grid(row=2,column=1,sticky='w')
     Label(tab2,text='Quit\t \t \t :',font=('arial',10)).grid(row=3,column=0,sticky='w')
@@ -565,33 +454,38 @@ def Home():
 
 
 
-
+    """
     Label(tab2,text='Font Size \t \t :',font=('arial',10)).grid(row=4,column=0)
     font_size = IntVar()
     fz = Entry(tab2, textvariable=font_size).grid(column=1,row=4)
-    p = font_size.get()
 
     def change():
-        with open('file.json', 'r+') as file:
-            m = 10
-            m += p
-            content = file.read()
-            file.seek(0)
-            content.replace(content,str(m))
-            file.write(str(m))
-            file.close()
+        f = open('font.json','r')
+        m = font_size.get()
+        data = {
+
+        }
+        data= load(f)
+        data['font'] = {
+            'font' : 'Arial',
+            'font_size' : m
+        }
+
+        with open('font.json','w') as g:
+            dump(data,g)
+
+
+
 
     Button(tab2,text='Change!',command=change).grid(column=4,row=4)
-    s=10
 
+    h = open('font.json','r')
+    l = {
 
-
-
-
-
-
-
-
+    }
+    l = load(h)
+    s = l["font"]["font_size"]"""
+    s = 15
     sapa5 =Label(tab1,text='Halo Workers',font=('arial',s)).grid(row=4,column=8)
     sapa4 =Label(tab1,text='Jangan lupa cuci jangan \n dan jaga kebersihan',font=('arial',s)).grid(row=5,column=8)
     sapa3 =Label(tab1,text='Stay Safe and Healty... \n jangan Lupa berdoa juga ya ',font=('arial',s)).grid(row=6,column=8)
@@ -599,22 +493,40 @@ def Home():
     sapa2 =Label(tab1,text=selamat,font=('arial',s)).grid(row=7,column=8)
     sapa1 =Label(tab1,text=semangat,font=('arial',s)).grid(row=9,column=8)
 
+'''
+log = Tk()
+log.geometry('300x200')
+app = False
+Label(log,text='Please enter your \n username and password below :').pack()
+Label(log,text='Username :').pack()
+username_given = StringVar()
+Entry(log,textvariable=username_given).pack()
+Label(log,text='Password :').pack()
+password_given = StringVar()
+Entry(log,textvariable=password_given,show='*').pack()
 
+user_given = username_given.get()
+pass_given = password_given.get()
 
+def check():
+    global Home
+    user = open('user.json','r+')
+    username_aviable = {}
+    username_aviable = load(user)
 
+    for key,value  in username_aviable.items():
+        username = key
+        password = value
 
-
-
-
-
-
-
-
-
-
-
-login()
-
-
+    if user_given in username:
+        if pass_given in password :
+            Home()
+        else:
+            pass
+    else :
+        pass
+Button(log,text='LOGIN',command=check).pack()
+'''
+Home()
 
 mainloop()
