@@ -8,6 +8,10 @@ import tkinter.ttk as ttk
 #from ttkthemes import ThemedStyle
 from json import *
 from datetime import  datetime
+from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import Paragraph, Spacer, Table, Image
+from reportlab.lib.styles import getSampleStyleSheet
 
 def register():
     global register_screen
@@ -125,6 +129,38 @@ def login_verify():
 
     with open('login_info.json', 'w') as f:
     	dump(data, f)
+    def buat_login_save1():
+        now = datetime.now()
+
+        q = str(now) +  ' LIST HARGA DAN STOCK BARANG.pdf'
+
+        styles = getSampleStyleSheet()
+        report = SimpleDocTemplate('report/LOGIN SAVE INFO.pdf')
+        report_title = Paragraph("LOGIN SAVE INFO", styles["h1"])
+        report.title = (str(now))
+        report.build([report_title])
+
+        fruit = {
+
+        }
+
+        f = open('login_info.json','r')
+
+        fruit = load(f)
+
+        table_data = []
+        for k, v in fruit.items():
+            table_data.append([k, v])
+
+
+        report_table = Table(data=table_data)
+        report.build([report_title, report_table])
+        from reportlab.lib import colors
+
+        table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
+        report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
+        report.build([report_title, report_table])
+    buat_login_save1()
 
 
 # Designing popup for login success
@@ -307,10 +343,89 @@ def Home():
     Button(tab1,text='UBAH JUMLAH STOCK',command=ubah_jumlah_stock).grid(row=7,column=0,padx=30,pady=20)
     Button(tab1,text='UBAH HARGA BARANG').grid(row=9,column=0,padx=30,pady=20)
 
-    Button(tab1,text='BUKA MESIN KASIR').grid(row=3,column=2,padx=30,pady=20)
-    Button(tab1,text='BUKA LIST HARGA').grid(row=5,column=2,padx=30,pady=20)
-    Button(tab1,text='BUKA LIST STOCK').grid(row=7,column=2,padx=30,pady=20)
-    Button(tab1,text='BUKA LIST STOCK DAN HARGA').grid(row=9,column=2,padx=30,pady=20)
+    def buat_list_stock():
+        now = datetime.now()
+
+        q = str(now) +  ' LIST HARGA DAN STOCK BARANG.pdf'
+
+        styles = getSampleStyleSheet()
+        report = SimpleDocTemplate('report/LIST HARGA DAN STOCK BARANG.pdf')
+        report_title = Paragraph("LIST HARGA DAN STOCK BARANG", styles["h1"])
+        report.title = (str(now))
+        report.build([report_title])
+
+        fruit = {
+
+        }
+
+        f = open('barang.json','r')
+
+        fruit = load(f)
+
+        table_data = []
+        for k, v in fruit.items():
+            table_data.append([k, v])
+
+
+        report_table = Table(data=table_data)
+        report.build([report_title, report_table])
+        from reportlab.lib import colors
+
+        table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
+        report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
+        report.build([report_title, report_table])
+
+        new = Toplevel(window)
+        Label(new,text='List sudah dibuat di \n C:\github\Tkinter\KasirToko(GUI)\Report').grid(column=1,row=1)
+        def del_new():
+            del new
+        Button(new,text='OK').grid(row=2,column=1)
+
+
+    def buat_login_save():
+        now = datetime.now()
+
+        q = str(now) +  ' LIST HARGA DAN STOCK BARANG.pdf'
+
+        styles = getSampleStyleSheet()
+        report = SimpleDocTemplate('report/LOGIN SAVE INFO.pdf')
+        report_title = Paragraph("LOGIN SAVE INFO", styles["h1"])
+        report.title = (str(now))
+        report.build([report_title])
+
+        fruit = {
+
+        }
+
+        f = open('login_info.json','r')
+
+        fruit = load(f)
+
+        table_data = []
+        for k, v in fruit.items():
+            table_data.append([k, v])
+
+
+        report_table = Table(data=table_data)
+        report.build([report_title, report_table])
+        from reportlab.lib import colors
+
+        table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
+        report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
+        report.build([report_title, report_table])
+        new = Toplevel(window)
+        Label(new,text='List sudah dibuat di \n C:\github\Tkinter\KasirToko(GUI)\Report').grid(column=1,row=1)
+        def del_new():
+            del new
+        Button(new,text='OK').grid(row=2,column=1)
+
+
+
+
+    Button(tab1,text='BUKA MESIN KASIR{BETA}').grid(row=3,column=2,padx=30,pady=20)
+    Button(tab1,text='BUAT LIST STOCK DAN HARGA',command=buat_list_stock).grid(row=5,column=2,padx=30,pady=20)
+    Button(tab1,text='BUAT LAPORAN PEMBELIAN HARI INI').grid(row=7,column=2,padx=30,pady=20)
+    Button(tab1,text='BUAT LOGIN SAVE INFO',command=buat_login_save).grid(row=9,column=2,padx=30,pady=20)
 
     Button(tab1,text='LAPOR PEMBELIAN').grid(row=3,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR ERROR').grid(row=5,column=6,padx=30,pady=20)
@@ -409,7 +524,7 @@ def Home():
 
 
 
-Home()
+login()
 
 
 
