@@ -7,14 +7,15 @@ import os
 import sys
 import tkinter.ttk as ttk
 #from ttkthemes import ThemedStyle
+from tkinter import Tk, Label, StringVar, ttk, Entry, Button, LabelFrame, Menu, Frame
+
 from json import *
 from datetime import *
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.platypus import Paragraph, Spacer, Table, Image
 from reportlab.lib.styles import getSampleStyleSheet
-global Home
-from calculator import calculatess
+
 
 
 
@@ -207,8 +208,6 @@ def Home():
         def new():
             new = Toplevel(window)
             code = kode_barang.get()
-
-
             f = open('barang.json','r+')
             data = load(f)
             stock_old = data[code]['jumlah']
@@ -416,52 +415,95 @@ def Home():
     Button(tab1,text='BUAT LOGIN SAVE INFO',command=buat_login_save).grid(row=9,column=2,padx=30,pady=20)
 
     def lapor_pembelian():
-        new = Toplevel(window)
-        Label(new,text='Kode barang yang di beli : ').grid(row=1,column=1)
-        kode_barang = StringVar()
-        Entry(new,textvariable=kode_barang).grid(row=1,column=2)
-        Label(new,text='Jumlah barang yang di beli : ').grid(row=2,column=1)
-        jumlah_dibeli = IntVar()
-        Entry(new,textvariable=jumlah_dibeli).grid(row=2,column=2)
+        window = Tk()
+        window.title("Hypermart Belanja Puas")
+        # window.minsize(800, 600)
+        window.resizable(False, False)
 
-        def lapor_pembelian_main():
-            code = kode_barang.get()
-            quantity = jumlah_dibeli.get()
+        ##FORM
+        def put_into_cart():
+            global window
+            kodes = nama.get()
+            print(kodes)
+            jumlah = jumlah_dibeli.get()
             f = open('barang.json','r')
             data = {}
             data = load(f)
-            jumlah_awal = data[code]["jumlah"]
-            name = data[code]["Nama"]
-            price = data[code]['Harga']
+            benda = data[kodes]["Nama"]
+            harga = data[kodes]["Harga"]
+            jumlah_awal = data[kodes]["jumlah"]
+            jumlah_akhir = int(jumlah_awal) - int(jumlah)
+            data[kodes] = {
+                'Nama' : benda,
+                'Harga' : harga,
+                'jumlah' : jumlah_akhir
+            }
+            with open('barang.json','w') as d:
+                dump(data,d)
+            harga_total_satuan = harga*jumlah
+            text = ''
+            text = benda +' -> ' + jumlah + ' --> ' + harga_total_satuan + '\n'
+            list_items.config(text=text)
 
-            if quantity < jumlah_awal :
-                jumlah_akhir = jumlah_awal - quantity
-                data[code] = {
-                    'Nama' : name,
-                    'Harga' : price,
-                    'jumlah' : jumlah_akhir
-                }
 
-                k = open('pembelian.json','r+')
-                report = {}
-                report = load(k)
-                harga_report = price * quantity
-                now = str(datetime.now())
-                report[now] = {
-                    'Kode' : code,
-                    'Nama' : name,
-                    'Jumlah Beli' : quantity,
-                    'Total Harga' : harga_report
 
-                }
-                with open('pembelian.json','w') as g:
-                    dump(report,g)
-                with open('barang.json','w') as d:
-                    dump(data,d)
-            else :
-                error = Tk()
-                Label(error,text='Jumlah Tidak Cukup Gengsss')
-        Button(new,text='OK',command=lapor_pembelian_main).grid(row=3,column=2)
+
+        formFrame = LabelFrame(window, text="Form Pembelian")
+        formFrame.grid(column = 0, row=0, columnspan=3, rowspan=4, padx=5, pady=5)
+        header_form = Label(formFrame, text="HYPERMART", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
+        header_form.grid(column=0, row=0, columnspan=2)
+
+        label_nama = Label(formFrame, text="Nama : ", font=('arial', 12, 'bold') , justify="left", bd=20, padx=5, pady=5)
+        label_nama.grid(column = 0, row=1)
+
+        nama = StringVar()
+        entry_nama = Entry(formFrame, textvariable=nama, font=('arial', 12, 'bold'), width=8)
+        entry_nama.grid(column=1, row=1)
+
+        label_harga = Label(formFrame, text="jumlah : ", font=('arial', 12, 'bold') , justify="left", bd=20, padx=5, pady=5)
+        label_harga.grid(column = 0, row=2)
+
+        jumlah_dibeli = StringVar()
+        entry_harga = Entry(formFrame, textvariable=jumlah_dibeli, font=('arial', 12, 'bold'), width=8)
+        entry_harga.grid(column=1, row=2)
+
+
+
+        button_entry = Button(formFrame, font=('arial', 12, 'bold'), text='Entry Barang', command=put_into_cart)
+        button_entry.grid(column=0, row=3, columnspan=2)
+
+
+                ##STATUS
+        statusFrame = LabelFrame(window, text="Status")
+        statusFrame.grid(column = 0, row=4, columnspan=3, padx=5, pady=5)
+
+        header_status = Label(statusFrame, text="Status", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
+        header_status.grid(column=0, row=0)
+
+
+                ##TOTAL
+        totalFrame = LabelFrame(window, text="Total Pembelian")
+        totalFrame.grid(column=3, row=0, columnspan=2, padx=5, pady=5)
+
+        header_total = Label(totalFrame, text="Total", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
+        header_total.grid(column=0, row=0)
+
+
+                ##LIST
+        listFrame = LabelFrame(window, text="Daftar Barang")
+        listFrame.grid(column=3, row=1, columnspan=2, rowspan=4 , padx=5, pady=5)
+
+
+        header_list = Label(listFrame, text="Daftar Barang", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
+        header_list.grid(column=0, row=0, columnspan=2)
+
+        list_items = Label(listFrame, text="", font=('arial', 10), bd=20, padx=20, pady=15 )
+        list_items.grid(column = 0, row=1, columnspan=2)
+
+
+
+        window.mainloop()
+
 
     def lapor_error():
         error = Toplevel(window)
@@ -505,11 +547,26 @@ def Home():
             report.build([report_title, report_table])
         Button(error,text='LAPORKAN',command=save_error).grid(row=2,column=2)
 
+    def cetak_struk():
+        f = open('pembelian.json','r')
+        data = {}
+        data = load(f)
+
+        lis = list(data.items())
+        terakhir = lis[-1]
+        print(terakhir)
+        now = str(datetime.now())
+
+
+
+
+
+
 
     Button(tab1,text='LAPOR PEMBELIAN',command=lapor_pembelian).grid(row=3,column=6,padx=30,pady=20)
     Button(tab1,text='LAPOR ERROR',command=lapor_error).grid(row=5,column=6,padx=30,pady=20)
-    Button(tab1,text='LAPOR PENAMBAHAN UANG').grid(row=7,column=6,padx=30,pady=20)
-    Button(tab1,text='LAPOR PENAGMBILAN UANG').grid(row=9,column=6,padx=30,pady=20)
+    Button(tab1,text='CETAK STRUK PEMBELANJAAN TERAKHIR',command=cetak_struk).grid(row=7,column=6,padx=30,pady=20)
+    Button(tab1,text='UPDATE').grid(row=9,column=6,padx=30,pady=20)
 
     time = int(strftime('%H'))
     salam = ''
