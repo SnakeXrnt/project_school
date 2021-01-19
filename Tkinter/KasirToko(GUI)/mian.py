@@ -8,15 +8,14 @@ import sys
 import tkinter.ttk as ttk
 #from ttkthemes import ThemedStyle
 from tkinter import Tk, Label, StringVar, ttk, Entry, Button, LabelFrame, Menu, Frame
-
+import smtplib
+from email.message import EmailMessage
 from json import *
 from datetime import *
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.platypus import Paragraph, Spacer, Table, Image
 from reportlab.lib.styles import getSampleStyleSheet
-
-
 
 
 
@@ -52,75 +51,20 @@ def Home():
     tabControl = ttk.Notebook(window)
     tab1 = Frame(tabControl)
     tab2 = Frame(tabControl)
-    win = Frame(tabControl)
+    #win = Frame(tabControl)
     tabControl.add(tab1, text='Home')
     tabControl.add(tab2, text='Settings')
-    tabControl.add(win,text='Calculator')
+    #tabControl.add(win,text='Calculator')
     tabControl.grid(column=0,row=0)
 
-    def btn_click(item):
-        global expression
-        expression = expression + str(item)
-        input_text.set(expression)
 
-    # 'bt_clear' function :This is used to clear
-    # the input field
 
-    def bt_clear():
-        global expression
-        expression = ""
-        input_text.set("")
-
-    # 'bt_equal':This method calculates the expression
-    # present in input field
-
-    def bt_equal():
-        global expression
-        result = str(eval(expression)) # 'eval':This function is used to evaluates the string expression directly
-        input_text.set(result)
-        expression = ""
-
-    expression = ""
-    # 'StringVar()' :It is used to get the instance of input field
-    input_text = StringVar()
-    # Let us creating a frame for the input field
-    input_frame = Frame(win, width=312, height=50 )
-    input_frame.pack(side=TOP)
-    #Let us create a input field inside the 'Frame'
-    input_field = Entry(input_frame, font=('arial', 18, 'bold'), textvariable=input_text, width=50,  justify=RIGHT)
-    input_field.grid(row=0, column=0)
-    input_field.pack(ipady=10) # 'ipady' is internal padding to increase the height of input field
-    #Let us creating another 'Frame' for the button below the 'input_frame'
-    btns_frame = Frame(win, width=312, height=272.5)
-    btns_frame.pack()
-    # first row
-    clear = Button(btns_frame, text = "C", width = 32,    cursor = "hand2", command = lambda: bt_clear()).grid(row = 0, column = 0, columnspan = 3, padx = 1, pady = 1)
-    divide = Button(btns_frame, text = "/", width = 10,    cursor = "hand2", command = lambda: btn_click("/")).grid(row = 0, column = 3, padx = 1, pady = 1)
-    # second row
-    seven = Button(btns_frame, text = "7", width = 10,    cursor = "hand2", command = lambda: btn_click(7)).grid(row = 1, column = 0, padx = 1, pady = 1)
-    eight = Button(btns_frame, text = "8", width = 10,    cursor = "hand2", command = lambda: btn_click(8)).grid(row = 1, column = 1, padx = 1, pady = 1)
-    nine = Button(btns_frame, text = "9", width = 10,   cursor = "hand2", command = lambda: btn_click(9)).grid(row = 1, column = 2, padx = 1, pady = 1)
-    multiply = Button(btns_frame, text = "*", width = 10,    cursor = "hand2", command = lambda: btn_click("*")).grid(row = 1, column = 3, padx = 1, pady = 1)
-    # third row
-    four = Button(btns_frame, text = "4", width = 10,    cursor = "hand2", command = lambda: btn_click(4)).grid(row = 2, column = 0, padx = 1, pady = 1)
-    five = Button(btns_frame, text = "5", width = 10,  cursor = "hand2", command = lambda: btn_click(5)).grid(row = 2, column = 1, padx = 1, pady = 1)
-    six = Button(btns_frame, text = "6", width = 10,  cursor = "hand2", command = lambda: btn_click(6)).grid(row = 2, column = 2, padx = 1, pady = 1)
-    minus = Button(btns_frame, text = "-", width = 10,    cursor = "hand2", command = lambda: btn_click("-")).grid(row = 2, column = 3, padx = 1, pady = 1)
-    # fourth row
-    one = Button(btns_frame, text = "1", width = 10,  cursor = "hand2", command = lambda: btn_click(1)).grid(row = 3, column = 0, padx = 1, pady = 1)
-    two = Button(btns_frame, text = "2", width = 10,  cursor = "hand2", command = lambda: btn_click(2)).grid(row = 3, column = 1, padx = 1, pady = 1)
-    three = Button(btns_frame, text = "3", width = 10,  cursor = "hand2", command = lambda: btn_click(3)).grid(row = 3, column = 2, padx = 1, pady = 1)
-    plus = Button(btns_frame, text = "+", width = 10,    cursor = "hand2", command = lambda: btn_click("+")).grid(row = 3, column = 3, padx = 1, pady = 1)
-    # fourth row
-    zero = Button(btns_frame, text = "0", width = 21,  cursor = "hand2", command = lambda: btn_click(0)).grid(row = 4, column = 0, columnspan = 2, padx = 1, pady = 1)
-    point = Button(btns_frame, text = ".", width = 10,    cursor = "hand2", command = lambda: btn_click(".")).grid(row = 4, column = 2, padx = 1, pady = 1)
-    equals = Button(btns_frame, text = "=", width = 10,    cursor = "hand2", command = lambda: bt_equal()).grid(row = 4, column = 3, padx = 1, pady = 1)
-    label = Label(tab1, font=("Courier", 30, 'bold'))
-    label.grid(row =0, column=0)
+    jam = Label(tab1,text='JAM',font=('Arial',40))
+    jam.grid(row=0,column=0)
     def digitalclock():
        text_input = strftime("%H:%M:%S")
-       label.config(text=text_input)
-       label.after(200, digitalclock)
+       jam.config(text=text_input)
+       jam.after(200, digitalclock)
     digitalclock()
 
 
@@ -226,7 +170,7 @@ def Home():
                 data[code] = {
                     'Nama' : name,
                     'Harga' : price,
-                    'Jumlah' : updt
+                    'jumlah' : updt
 
                 }
                 with open('barang.json','w') as d:
@@ -248,7 +192,7 @@ def Home():
 
             f = open('barang.json','r+')
             data = load(f)
-            stock_old = data[code]['Harga']
+            stock_old = data[code]["Harga"]
             Label(new,text='Harga sekarang : ').grid(row=1,column=1)
             Label(new,text=stock_old).grid(row=1,column=2)
             Label(new,text='Harga baru : ').grid(row=2,column=1)
@@ -260,11 +204,11 @@ def Home():
                 f = open('barang.json','r')
                 data = load(f)
                 name = data[code]['Nama']
-                Stock = data[code]['jumlah']
+                Stock = data[code]["jumlah"]
                 data[code] = {
                     'Nama' : name,
                     'Harga' : updt,
-                    'Jumlah' : Stock
+                    'jumlah' : Stock
 
                 }
                 with open('barang.json','w') as d:
@@ -415,10 +359,10 @@ def Home():
     Button(tab1,text='BUAT LOGIN SAVE INFO',command=buat_login_save).grid(row=9,column=2,padx=30,pady=20)
 
     def lapor_pembelian():
-        window = Tk()
-        window.title("Hypermart Belanja Puas")
+        laporpembelian = Toplevel(window)
+
         # window.minsize(800, 600)
-        window.resizable(False, False)
+
 
         ##FORM
         def put_into_cart():
@@ -426,6 +370,7 @@ def Home():
             kodes = nama.get()
             print(kodes)
             jumlah = jumlah_dibeli.get()
+            email_pembeli = email.get()
             f = open('barang.json','r')
             data = {}
             data = load(f)
@@ -440,15 +385,96 @@ def Home():
             }
             with open('barang.json','w') as d:
                 dump(data,d)
-            harga_total_satuan = harga*jumlah
+            harga_total_satuan = str(harga*int(jumlah))
             text = ''
             text = benda +' -> ' + jumlah + ' --> ' + harga_total_satuan + '\n'
             list_items.config(text=text)
+            now = str(datetime.now())
+
+            f = open('pembelian.json','r')
+
+            fruit = {}
+            fruit = load(f)
+            fruit[benda] = {
+                'Jumlah dibeli' : jumlah,
+                'Harga Satuan' : harga,
+                'Harga total' : harga_total_satuan
+            }
+
+            with open('pembelian.json','w') as d:
+                dump(fruit,d)
+
+
+        def kirim():
+            now = str(datetime.now())
+            styles = getSampleStyleSheet()
+            report = SimpleDocTemplate(f'report/STRUK.pdf')
+            report_title = Paragraph("STRUK PEMBELANJAAN MU" + '\n '+now, styles["h1"])
+            report.title = (str(now))
+
+            report.build([report_title])
+            g = open('pembelian.json','r')
+            fruit = {}
+            fruit = load(g)
+            print(fruit)
 
 
 
 
-        formFrame = LabelFrame(window, text="Form Pembelian")
+            table_data = []
+            for k, v in fruit.items():
+                table_data.append([k, v])
+
+            report_table = Table(data=table_data)
+            report.build([report_title, report_table])
+            from reportlab.lib import colors
+
+            table_style = [('GRID', (0,0), (-1,-1), 1, colors.black)]
+            report_table = Table(data=table_data, style=table_style, hAlign="LEFT")
+            report.build([report_title, report_table])
+            email_pemb = email.get()
+
+            EMAIL_ADDRESS = 'tokoterangjaya2@gmail.com'
+            EMAIL_PASSWORD = 'Ethanbas17'
+
+
+            msg = EmailMessage()
+            msg['Subject'] ='Struk pembelanjaanmu'
+            msg['From'] = EMAIL_ADDRESS
+            msg['To'] = email_pemb
+            msg.set_content(now)
+
+            files = ['C:\github\Tkinter\KasirToko(GUI)\Report\STRUK.pdf']
+
+            for file in files:
+                with open(file,'rb') as f:
+                    file_data = f.read()
+                    file_name = f.name
+
+                msg.add_attachment(file_data,maintype='application',subtype='octet-stream',filename=file_name)
+
+            with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.ehlo()
+
+
+                smtp.login(EMAIL_ADDRESS,EMAIL_PASSWORD)
+
+
+                smtp.send_message(msg)
+
+            w = open('pembelian.json','w')
+            tst = {}
+            dump(tst,w)
+
+
+
+
+
+
+
+        formFrame = LabelFrame(laporpembelian, text="Form Pembelian")
         formFrame.grid(column = 0, row=0, columnspan=3, rowspan=4, padx=5, pady=5)
         header_form = Label(formFrame, text="HYPERMART", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
         header_form.grid(column=0, row=0, columnspan=2)
@@ -466,15 +492,20 @@ def Home():
         jumlah_dibeli = StringVar()
         entry_harga = Entry(formFrame, textvariable=jumlah_dibeli, font=('arial', 12, 'bold'), width=8)
         entry_harga.grid(column=1, row=2)
+        Label(formFrame, text="email pembeli  : ", font=('arial', 12, 'bold') , justify="left", bd=20, padx=5, pady=5).grid(column=0,row=3)
+        email = StringVar()
+        entry_email = Entry(formFrame, textvariable=email, font=('arial', 12, 'bold'), width=8).grid(column=1,row=3)
 
 
 
         button_entry = Button(formFrame, font=('arial', 12, 'bold'), text='Entry Barang', command=put_into_cart)
-        button_entry.grid(column=0, row=3, columnspan=2)
+        button_entry.grid(column=0, row=4, columnspan=2)
+
+        Button(formFrame, font=('arial', 12, 'bold'), text='kirim struk', command=kirim).grid(column=0,row=5)
 
 
                 ##STATUS
-        statusFrame = LabelFrame(window, text="Status")
+        statusFrame = LabelFrame(laporpembelian, text="Status")
         statusFrame.grid(column = 0, row=4, columnspan=3, padx=5, pady=5)
 
         header_status = Label(statusFrame, text="Status", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
@@ -482,7 +513,7 @@ def Home():
 
 
                 ##TOTAL
-        totalFrame = LabelFrame(window, text="Total Pembelian")
+        totalFrame = LabelFrame(laporpembelian, text="Total Pembelian")
         totalFrame.grid(column=3, row=0, columnspan=2, padx=5, pady=5)
 
         header_total = Label(totalFrame, text="Total", font=('arial', 16, 'bold'), bd=20, padx=20, pady=15 )
@@ -490,7 +521,7 @@ def Home():
 
 
                 ##LIST
-        listFrame = LabelFrame(window, text="Daftar Barang")
+        listFrame = LabelFrame(laporpembelian, text="Daftar Barang")
         listFrame.grid(column=3, row=1, columnspan=2, rowspan=4 , padx=5, pady=5)
 
 
@@ -502,7 +533,8 @@ def Home():
 
 
 
-        window.mainloop()
+
+
 
 
     def lapor_error():
@@ -686,5 +718,4 @@ def check():
 Button(log,text='LOGIN',command=check).pack()
 '''
 Home()
-
 mainloop()
